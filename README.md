@@ -1,23 +1,38 @@
-# Pickyla Pickleball Coaching v3
+# Pickyla Coaching v4
 
-## New admin workflow
-- Multi-hour booking: enter client details once, choose an available start time and an end time, then save once.
-- End-time choices stop automatically before the next booked or unavailable hour.
-- Quick Block: mark a date range and time range as Unavailable for tournaments or personal schedules.
-- Whole-day preset: 8:00 AM to 12:00 Midnight.
-- Clear Unavailable restores only blocked hours and does not delete existing bookings.
-- The original hourly editor remains available for one-off corrections.
+## New in v4
+- One-tap whole-booking cancellation: all hours tied to that booking become available again.
+- Standard rate presets based on player count:
+  - 1 player = PHP 300/person/hour
+  - 2 players = PHP 250/person/hour
+  - 3-5 players = PHP 200/person/hour
+- Custom agreed rate option.
+- Booking total is calculated automatically.
+- Amount received tracking.
+- Earnings dashboard: Today, This Week, This Month, All Time.
+- Quick tournament/unavailable presets.
+- Public calendar:
+  - Green = open
+  - Amber = has booking but still has open hours
+  - Red = all 16 hours are booked
+  - Gray = no availability due to blocks / limited availability
 
-## Public calendar colors
-- Green: no bookings on that date and open schedule.
-- Amber: the date already has one or more bookings but is not fully booked.
-- Red: every hourly slot from 8 AM to 12 Midnight is booked.
-- Gray: date is fully or partly marked Unavailable and has no booking.
+## IMPORTANT
+Run `supabase-v4-migration.sql` once BEFORE uploading the v4 website files.
 
-## Database
-No new SQL migration is required if v2 is already working.
+## Legacy v3 bookings
+Old v3 bookings do not have a booking group ID. They remain visible in Hourly View, but the new one-tap whole-booking cancellation and earnings report are designed for bookings created in v4 onward.
 
 ## Admin URL
 https://xbalancedvpn.github.io/pickleballcoaching/admin.html
 
-Upload/replace the files in the existing GitHub Pages repository.
+
+## v5 client booking improvements
+- Client can choose Start Time + End Time for multi-hour booking requests.
+- End Time only shows consecutive available hours and stops before a booked/unavailable slot.
+- Ready-made booking message is generated automatically.
+- `Copy Booking Details` copies the message.
+- `Copy & Open Facebook` copies the message then opens Kyla's Facebook so the client can paste it into Messenger.
+- No new Supabase SQL migration is needed if v4 is already working.
+
+Note: Facebook/Messenger does not reliably support pre-filling arbitrary message text from a normal website link, so copy-then-open is the most dependable flow.
