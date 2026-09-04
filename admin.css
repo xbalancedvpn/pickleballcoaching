@@ -57,3 +57,6 @@ body{background:#fbfaf7;color:#111}
   .auth-logo{height:46px;max-width:250px}
   .admin-logo{height:29px;max-width:175px}
 }
+
+/* ===== v13 approved Pickyla logo assets ===== */
+.brand-logo{object-fit:contain;object-position:left center;background:#111;padding:3px 6px}

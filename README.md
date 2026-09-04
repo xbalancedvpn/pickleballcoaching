@@ -40,3 +40,9 @@ The website currently uses a lightweight Signature + Monogram placeholder. Separ
 - `pickyla-wordmark-final.png` is a crop of the same approved artwork for compact header/admin use.
 - Final theme is black / yellow / white.
 - No new Supabase migration is required.
+
+
+## v13 approved logo integration
+- Uses the approved separated emblem and PICKYLA wordmark shown in the latest logo reference.
+- Includes three logo assets: full logo, emblem-only, and wordmark-only.
+- No Supabase/database changes required.

@@ -72,3 +72,8 @@ footer{background:#0a0a0a;color:#d8d8d8;align-items:center}
   .hero-logo{width:min(270px,74vw)}
   .footer-logo{height:40px;max-width:230px}
 }
+
+/* ===== v13 approved Pickyla logo assets ===== */
+.brand-logo{object-fit:contain;object-position:left center;background:#111}
+.hero-logo{object-fit:contain;background:#111;padding:8px;border-radius:16px}
+.footer-logo{object-fit:contain;background:#111;padding:4px 8px}
