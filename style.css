@@ -73,7 +73,27 @@ footer{background:#0a0a0a;color:#d8d8d8;align-items:center}
   .footer-logo{height:40px;max-width:230px}
 }
 
-/* ===== v13 approved Pickyla logo assets ===== */
-.brand-logo{object-fit:contain;object-position:left center;background:#111}
-.hero-logo{object-fit:contain;background:#111;padding:8px;border-radius:16px}
-.footer-logo{object-fit:contain;background:#111;padding:4px 8px}
+
+/* v13 brand asset update */
+.brand-lockup{display:flex;align-items:center;gap:12px;min-width:0}
+.brand.compact,.footer-brand{background:transparent;padding:0}
+.brand-mark,.brand-wordmark,.hero-mark,.hero-wordmark,.footer-mark,.footer-wordmark{display:block;width:auto;object-fit:contain}
+.brand-mark{height:38px}
+.brand-wordmark{height:28px;max-width:min(52vw,240px)}
+.hero-brand{display:flex;align-items:center;gap:16px;margin:0 0 18px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.25))}
+.hero-mark{height:88px}
+.hero-wordmark{height:72px;max-width:min(100%,520px)}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-mark{height:34px}
+.footer-wordmark{height:28px;max-width:220px}
+@media (max-width:700px){
+  .brand-lockup{gap:8px}
+  .brand-mark{height:31px}
+  .brand-wordmark{height:22px;max-width:150px}
+  .hero-brand{gap:12px;margin-bottom:14px}
+  .hero-mark{height:62px}
+  .hero-wordmark{height:48px;max-width:220px}
+  .footer-brand{gap:8px}
+  .footer-mark{height:28px}
+  .footer-wordmark{height:22px;max-width:155px}
+}

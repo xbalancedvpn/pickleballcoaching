@@ -46,3 +46,10 @@ The website currently uses a lightweight Signature + Monogram placeholder. Separ
 - Uses the approved separated emblem and PICKYLA wordmark shown in the latest logo reference.
 - Includes three logo assets: full logo, emblem-only, and wordmark-only.
 - No Supabase/database changes required.
+
+
+## v14 favicon update
+- Added favicon assets based on the Pickyla emblem.
+- Added favicon links to `index.html` and `admin.html`.
+- Added `site.webmanifest`, `favicon.ico`, PNG favicon files, and Apple touch icon.
+- No Supabase changes required.

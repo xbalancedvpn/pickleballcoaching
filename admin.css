@@ -58,5 +58,15 @@ body{background:#fbfaf7;color:#111}
   .admin-logo{height:29px;max-width:175px}
 }
 
-/* ===== v13 approved Pickyla logo assets ===== */
-.brand-logo{object-fit:contain;object-position:left center;background:#111;padding:3px 6px}
+
+/* v13 brand asset update */
+.brand-lockup{display:flex;align-items:center;gap:12px;min-width:0}
+.auth-lockup,.admin-lockup{background:transparent;padding:0}
+.brand-mark,.brand-wordmark,.auth-mark,.auth-wordmark,.admin-mark,.admin-wordmark{display:block;width:auto;object-fit:contain}
+.auth-mark{height:56px}.auth-wordmark{height:44px;max-width:min(80vw,320px)}
+.admin-mark{height:34px}.admin-wordmark{height:28px;max-width:220px}
+@media (max-width:700px){
+  .brand-lockup{gap:8px}
+  .auth-mark{height:42px}.auth-wordmark{height:34px;max-width:220px}
+  .admin-mark{height:28px}.admin-wordmark{height:22px;max-width:170px}
+}
