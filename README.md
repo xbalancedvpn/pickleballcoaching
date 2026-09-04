@@ -31,3 +31,12 @@ The website currently uses a lightweight Signature + Monogram placeholder. Separ
 - Wordmark now reads as one word: PICKYLA (PIC dark/white depending on background, KYLA yellow).
 - Refreshed site accents from green to premium yellow + black.
 - No new database changes required; same Supabase setup as v8/v9.
+
+
+## v12 final logo correction
+- Uses the user's uploaded `9132.png` artwork as the exact source.
+- No AI redraw or vector reinterpretation is used in the website logo.
+- `pickyla-logo-final.png` is a crop of the approved full logo.
+- `pickyla-wordmark-final.png` is a crop of the same approved artwork for compact header/admin use.
+- Final theme is black / yellow / white.
+- No new Supabase migration is required.

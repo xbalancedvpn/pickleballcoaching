@@ -14,3 +14,61 @@ footer{align-items:center}
 .brand-logo{height:40px;max-width:min(52vw,250px)}
 .footer-logo{height:44px;max-width:260px}
 @media(max-width:700px){.brand-logo{height:34px;max-width:185px}.hero-copy .hero-logo{height:auto;max-width:300px}.footer-logo{height:36px}}
+
+/* ===== v12 FINAL PICKYLA: black / yellow / white ===== */
+:root{
+  --ink:#111111;
+  --green:#111111;
+  --lime:#f5c400;
+  --cream:#fffdf7;
+  --muted:#676767;
+  --line:#e9e5da;
+  --amber:#d8a800;
+  --logo-yellow:#f5c400;
+  --logo-black:#111111;
+}
+body{background:#fff;color:var(--ink)}
+.topbar{background:rgba(255,255,255,.98);border-bottom:1px solid #eee8d8}
+.brand{background:#111;border-radius:10px;padding:4px 8px}
+.brand-logo{height:38px;width:auto;max-width:220px;border-radius:7px;object-fit:contain}
+.main-nav a{color:#222}
+.main-nav a:hover{color:#9a7600}
+.small-book{background:#111;color:#f5c400}
+.menu-btn{background:#fff7d8;color:#111}
+.hero{background:#111}
+.photo-shade{background:linear-gradient(90deg,rgba(0,0,0,.91),rgba(0,0,0,.58) 48%,rgba(0,0,0,.18)),linear-gradient(0deg,rgba(0,0,0,.62),transparent 55%)}
+.hero-logo{display:block;width:min(310px,72vw);height:auto;max-width:none;margin:0 0 18px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.28)}
+.eyebrow{color:#f5c400}
+.eyebrow.dark{color:#a27b00}
+h1 em{color:#f5c400}
+.quote-card{border-left-color:#f5c400}
+.quote-card span{color:#f5c400}
+.btn.primary{background:#f5c400;color:#111}
+.btn.ghost{border-color:rgba(255,255,255,.55)}
+.rates{background:#fffaf0}
+.rate-card.featured{background:#111;color:#fff}
+.featured .pill{background:#f5c400;color:#111}
+.pill{background:#fff2b8;color:#6a5000}
+.schedule-notice{background:#fff4cf;color:#6b5200}
+.calendar-head button{background:#fff6d7;color:#111}
+.day{background:#fff7d6;color:#654f00}
+.day.today{outline-color:#111}
+.day.selected{box-shadow:inset 0 0 0 3px #111}
+.day.partial-booked{background:#ffe6a1;color:#6b4d00;border-color:#e9c452}
+.cal-open,.available-dot{background:#f5c400}
+.cal-partial{background:#d8a800}
+.slot.in-range{background:#fff4c7;border-color:#dfbd43;color:#5d4900}
+.package-options button.active{background:#111;border-color:#111;color:#f5c400}
+.duration-summary,.summary{background:#fff8dc}
+.summary span,.step{color:#9a7600}
+.copy-btn{background:#fff7df;color:#111;border-color:#ead8a1}
+.contact{background:#111}
+.contact .btn.primary{background:#f5c400;color:#111}
+footer{background:#0a0a0a;color:#d8d8d8;align-items:center}
+.footer-logo{height:48px;width:auto;max-width:300px;border-radius:8px}
+@media(max-width:700px){
+  .brand{padding:3px 6px}
+  .brand-logo{height:32px;max-width:180px}
+  .hero-logo{width:min(270px,74vw)}
+  .footer-logo{height:40px;max-width:230px}
+}
