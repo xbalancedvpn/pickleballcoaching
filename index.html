@@ -82,7 +82,7 @@
       <div class="section-heading">
         <span class="eyebrow dark">BOOK A SESSION</span>
         <h2>Pick your date & time.</h2>
-        <p>Select an available 1-hour slot. Your booking is finalized only after Kyla confirms it on Facebook.</p>
+        <p>Check the live schedule below. Your booking is finalized only after Kyla confirms it on Facebook.</p>
       </div>
 
       <div class="booking-panel">
@@ -96,10 +96,11 @@
         </div>
         <div class="calendar" id="calendar"></div>
 
-        <div class="legend">
-          <span><i class="available-dot"></i>Available</span>
-          <span><i class="booked-dot"></i>Booked</span>
-          <span><i class="unavailable-dot"></i>Unavailable</span>
+        <div class="legend calendar-legend">
+          <span><i class="day-open-dot"></i>Open</span>
+          <span><i class="day-partial-dot"></i>Has booking</span>
+          <span><i class="day-full-dot"></i>Fully booked</span>
+          <span><i class="day-limited-dot"></i>Unavailable / limited</span>
         </div>
 
         <div class="slot-area">
@@ -108,6 +109,11 @@
             <h3 id="selectedDateText">Choose a date</h3>
           </div>
           <div class="slots" id="slots"></div>
+          <div class="legend slot-legend">
+            <span><i class="available-dot"></i>Available</span>
+            <span><i class="booked-dot"></i>Booked</span>
+            <span><i class="unavailable-dot"></i>Unavailable</span>
+          </div>
         </div>
 
         <div class="package-area">

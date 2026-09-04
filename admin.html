@@ -1,98 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#173d2a">
-  <title>Pickyla Admin</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#173d2a"><title>Pickyla Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <div id="toast" class="toast"></div>
+<div id="toast" class="toast"></div>
+<section id="loginView" class="auth-page">
+  <div class="auth-card"><div class="logo-ball">P</div><span class="eyebrow">PICKYLA ADMIN</span><h1>Manage your coaching schedule.</h1><p>Sign in with your Supabase admin account.</p>
+    <form id="loginForm"><label>Email<input id="email" type="email" required autocomplete="username"></label><label>Password<input id="password" type="password" required autocomplete="current-password"></label><button class="primary" type="submit">Sign In</button></form><small id="loginError"></small>
+  </div>
+</section>
+<section id="adminView" class="hidden">
+<header class="admin-topbar"><div><strong>PICKYLA</strong><span>Schedule Admin</span></div><button id="logoutBtn" class="text-btn">Sign out</button></header>
+<main class="admin-wrap">
+  <section class="welcome"><span class="eyebrow">QUICK ADMIN</span><h1>Manage sessions faster.</h1><p>Book several consecutive hours with one form, or block dates and time ranges for tournaments and personal schedules.</p></section>
 
-  <section id="loginView" class="auth-page">
-    <div class="auth-card">
-      <div class="logo-ball">P</div>
-      <span class="eyebrow">PICKYLA ADMIN</span>
-      <h1>Manage your coaching schedule.</h1>
-      <p>Sign in with the admin account you created in Supabase.</p>
-      <form id="loginForm">
-        <label>Email<input id="email" type="email" required autocomplete="username"></label>
-        <label>Password<input id="password" type="password" required autocomplete="current-password"></label>
-        <button class="primary" type="submit">Sign In</button>
-      </form>
-      <small id="loginError"></small>
-    </div>
-  </section>
-
-  <section id="adminView" class="hidden">
-    <header class="admin-topbar">
-      <div><strong>PICKYLA</strong><span>Schedule Admin</span></div>
-      <button id="logoutBtn" class="text-btn">Sign out</button>
-    </header>
-
-    <main class="admin-wrap">
-      <section class="welcome">
-        <div>
-          <span class="eyebrow">COACHING CALENDAR</span>
-          <h1>Manage sessions</h1>
-          <p>Choose a date, then update any 1-hour slot from 8 AM to 12 midnight.</p>
-        </div>
-        <label class="date-box">Date<input id="adminDate" type="date"></label>
-      </section>
-
-      <div class="status-summary">
-        <div><strong id="availableCount">0</strong><span>Available</span></div>
-        <div><strong id="bookedCount">0</strong><span>Booked</span></div>
-        <div><strong id="unavailableCount">0</strong><span>Unavailable</span></div>
+  <section class="quick-grid">
+    <form id="quickBookingForm" class="panel">
+      <div class="panel-head"><div><span class="eyebrow">NEW BOOKING</span><h2>Book a time range</h2></div><span class="panel-tag">FAST</span></div>
+      <div class="form-grid">
+        <label class="full">Date<input id="bookingDate" type="date" required></label>
+        <label>Start time<select id="bookingStart" required></select></label>
+        <label>End time<select id="bookingEnd" required></select></label>
+        <label class="full">Client name<input id="bookingClient" type="text" required placeholder="Client name"></label>
+        <label>Contact<input id="bookingContact" type="text" placeholder="Messenger / mobile"></label>
+        <label>Coaching type<select id="bookingType"><option value="">Select</option><option>1-on-1</option><option>2 Players</option><option>3–5 Players</option></select></label>
+        <label>Rate<input id="bookingRate" type="number" min="0" step="1" placeholder="300"></label>
+        <label class="full">Notes<textarea id="bookingNotes" rows="2" placeholder="Optional"></textarea></label>
       </div>
-
-      <section class="slot-list" id="slotList"></section>
-    </main>
-  </section>
-
-  <dialog id="editDialog">
-    <form class="editor" id="editForm">
-      <div class="editor-head">
-        <div><span class="eyebrow">EDIT SESSION</span><h2 id="editSlotTitle"></h2></div>
-        <button type="button" id="closeDialog" class="close-btn">×</button>
-      </div>
-
-      <input id="editHour" type="hidden">
-      <label>Status
-        <select id="editStatus">
-          <option value="available">Available</option>
-          <option value="booked">Booked</option>
-          <option value="unavailable">Unavailable</option>
-        </select>
-      </label>
-
-      <div id="clientFields" class="client-fields">
-        <label>Client Name<input id="clientName" type="text" placeholder="Optional"></label>
-        <label>Contact<input id="contact" type="text" placeholder="Messenger / mobile number"></label>
-        <label>Coaching Type
-          <select id="coachingType">
-            <option value="">Select</option>
-            <option value="1-on-1">1-on-1</option>
-            <option value="2 Players">2 Players</option>
-            <option value="3–5 Players">3–5 Players</option>
-          </select>
-        </label>
-        <label>Rate<input id="rate" type="number" min="0" step="1" placeholder="300"></label>
-        <label>Notes<textarea id="notes" rows="3" placeholder="Optional notes"></textarea></label>
-      </div>
-
-      <div class="editor-actions">
-        <button type="button" id="deleteBtn" class="danger">Reset to Available</button>
-        <button type="submit" class="primary">Save Changes</button>
-      </div>
+      <div id="bookingHint" class="hint">Choose a date to load available times.</div>
+      <button class="primary wide" type="submit">Save Booking</button>
     </form>
-  </dialog>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="admin.js"></script>
-</body>
-</html>
+    <form id="blockForm" class="panel">
+      <div class="panel-head"><div><span class="eyebrow">QUICK BLOCK</span><h2>Tournament / unavailable</h2></div><span class="panel-tag muted">BULK</span></div>
+      <div class="form-grid">
+        <label>From date<input id="blockFromDate" type="date" required></label>
+        <label>To date<input id="blockToDate" type="date" required></label>
+        <label>Start time<select id="blockStart" required></select></label>
+        <label>End time<select id="blockEnd" required></select></label>
+      </div>
+      <div class="quick-presets"><button type="button" id="wholeDayBtn">Whole day 8 AM-12 MN</button><button type="button" id="sameDateBtn">Same date</button></div>
+      <p class="panel-note">Existing booked slots are protected and will not be overwritten.</p>
+      <div class="bulk-actions"><button class="secondary" type="submit">Mark Unavailable</button><button class="soft-danger" type="button" id="clearUnavailableBtn">Clear Unavailable</button></div>
+    </form>
+  </section>
+
+  <section class="day-section">
+    <div class="day-head"><div><span class="eyebrow">DAY VIEW</span><h2>Hourly schedule</h2></div><label class="date-box">Date<input id="adminDate" type="date"></label></div>
+    <div class="status-summary"><div><strong id="availableCount">0</strong><span>Available</span></div><div><strong id="bookedCount">0</strong><span>Booked</span></div><div><strong id="unavailableCount">0</strong><span>Unavailable</span></div></div>
+    <section class="slot-list" id="slotList"></section>
+  </section>
+</main>
+</section>
+
+<dialog id="editDialog">
+  <form class="editor" id="editForm">
+    <div class="editor-head"><div><span class="eyebrow">EDIT ONE HOUR</span><h2 id="editSlotTitle"></h2></div><button type="button" id="closeDialog" class="close-btn">x</button></div>
+    <input id="editHour" type="hidden">
+    <label>Status<select id="editStatus"><option value="available">Available</option><option value="booked">Booked</option><option value="unavailable">Unavailable</option></select></label>
+    <div id="clientFields" class="client-fields">
+      <label>Client Name<input id="clientName" type="text"></label><label>Contact<input id="contact" type="text"></label>
+      <label>Coaching Type<select id="coachingType"><option value="">Select</option><option>1-on-1</option><option>2 Players</option><option>3–5 Players</option></select></label>
+      <label>Rate<input id="rate" type="number" min="0" step="1"></label><label>Notes<textarea id="notes" rows="3"></textarea></label>
+    </div>
+    <div class="editor-actions"><button type="button" id="deleteBtn" class="danger">Reset to Available</button><button type="submit" class="primary">Save Changes</button></div>
+  </form>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="admin.js"></script>
+</body></html>

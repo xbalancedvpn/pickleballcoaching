@@ -1,25 +1,23 @@
-# Pickyla Pickleball Coaching v2
+# Pickyla Pickleball Coaching v3
 
-Public coaching page plus Supabase-powered admin schedule.
+## New admin workflow
+- Multi-hour booking: enter client details once, choose an available start time and an end time, then save once.
+- End-time choices stop automatically before the next booked or unavailable hour.
+- Quick Block: mark a date range and time range as Unavailable for tournaments or personal schedules.
+- Whole-day preset: 8:00 AM to 12:00 Midnight.
+- Clear Unavailable restores only blocked hours and does not delete existing bookings.
+- The original hourly editor remains available for one-off corrections.
 
-## Schedule
-Monday-Sunday, 8:00 AM-12:00 Midnight, fixed 1-hour slots.
+## Public calendar colors
+- Green: no bookings on that date and open schedule.
+- Amber: the date already has one or more bookings but is not fully booked.
+- Red: every hourly slot from 8 AM to 12 Midnight is booked.
+- Gray: date is fully or partly marked Unavailable and has no booking.
 
-## Rates
-- 1-on-1: PHP 300/hour
-- 2 Players: PHP 250/person/hour
-- 3-5 Players: PHP 200/person/hour
+## Database
+No new SQL migration is required if v2 is already working.
 
-## Admin page
-After upload to GitHub Pages:
+## Admin URL
 https://xbalancedvpn.github.io/pickleballcoaching/admin.html
 
-## Supabase setup
-1. Open Supabase > SQL Editor.
-2. Run `supabase-setup.sql`.
-3. Create your admin user in Authentication > Users.
-4. Disable public email sign-ups in Authentication > Sign In / Providers after creating the admin user.
-
-The public website only reads date, hour, and status. Client name, contact, rate, and notes are only available to authenticated admin users.
-
-Never add a Supabase Secret key or service_role key to these website files.
+Upload/replace the files in the existing GitHub Pages repository.
