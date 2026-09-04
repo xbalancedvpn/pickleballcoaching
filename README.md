@@ -24,3 +24,10 @@ The website currently uses a lightweight Signature + Monogram placeholder. Separ
 - Public page header, hero, and footer now use the approved Pickyla branding.
 - Admin login and topbar updated to use the same logo set.
 - Existing v8 features remain: menu, rotating sayings, calendar scheduling, copy/open Facebook flow, inquiry parser, reports, and booking group actions.
+
+
+## V10 logo + palette adjustment
+- Reworked logo icon so it no longer reads like a letter D.
+- Wordmark now reads as one word: PICKYLA (PIC dark/white depending on background, KYLA yellow).
+- Refreshed site accents from green to premium yellow + black.
+- No new database changes required; same Supabase setup as v8/v9.
