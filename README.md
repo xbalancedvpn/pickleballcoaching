@@ -43,3 +43,11 @@ Note: Facebook/Messenger does not reliably support pre-filling arbitrary message
 - Tap a date to open Booking Groups and Hourly View.
 - Same color coding as public calendar.
 - No new SQL required.
+
+
+## v7
+- Added cache-busting on admin/public CSS and JS (`?v=7`) so GitHub Pages loads the newest files.
+- Kept the restored Admin Month Calendar.
+- Switched theme to a Nanomoly-inspired Black / Yellow / White palette.
+- No new SQL required.
+- After upload, do a hard refresh if your phone still shows old styles.
