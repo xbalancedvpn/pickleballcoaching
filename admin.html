@@ -61,7 +61,33 @@
     </form>
   </section>
 
-  <section class="day-section">
+  
+<section class="admin-calendar-section">
+  <div class="admin-calendar-head">
+    <div>
+      <span class="eyebrow">MONTH VIEW</span>
+      <h2>Calendar overview</h2>
+      <p>Tap a date to open its bookings and hourly schedule below.</p>
+    </div>
+    <div class="month-nav">
+      <button type="button" id="adminPrevMonth">‹</button>
+      <strong id="adminMonthLabel"></strong>
+      <button type="button" id="adminNextMonth">›</button>
+    </div>
+  </div>
+  <div class="admin-weekdays">
+    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+  </div>
+  <div id="adminCalendar" class="admin-calendar"></div>
+  <div class="admin-calendar-legend">
+    <span><i class="lg-open"></i>Open</span>
+    <span><i class="lg-partial"></i>Has booking</span>
+    <span><i class="lg-full"></i>Fully booked</span>
+    <span><i class="lg-blocked"></i>Unavailable / limited</span>
+  </div>
+</section>
+
+<section class="day-section">
     <div class="day-head"><div><span class="eyebrow">DAY VIEW</span><h2>Bookings & hourly schedule</h2></div><label class="date-box">Date<input id="adminDate" type="date"></label></div>
     <div class="status-summary"><div><strong id="availableCount">0</strong><span>Available hours</span></div><div><strong id="bookedCount">0</strong><span>Booked hours</span></div><div><strong id="unavailableCount">0</strong><span>Unavailable hours</span></div></div>
 

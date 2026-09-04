@@ -36,3 +36,10 @@ https://xbalancedvpn.github.io/pickleballcoaching/admin.html
 - No new Supabase SQL migration is needed if v4 is already working.
 
 Note: Facebook/Messenger does not reliably support pre-filling arbitrary message text from a normal website link, so copy-then-open is the most dependable flow.
+
+
+## v6
+- Restored Admin Month Calendar.
+- Tap a date to open Booking Groups and Hourly View.
+- Same color coding as public calendar.
+- No new SQL required.
