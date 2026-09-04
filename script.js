@@ -1,194 +1,45 @@
 const SUPABASE_URL="https://bnekbuwfloagqjzselxp.supabase.co",SUPABASE_PUBLISHABLE_KEY="sb_publishable_Xs8qdDm4RTa2Adjw34SLKw_rS-c-ikB";
 const FACEBOOK_URL="https://www.facebook.com/share/19JD1ACiCu/";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const calendar=document.getElementById("calendar"),monthLabel=document.getElementById("monthLabel"),slotsEl=document.getElementById("slots"),selectedDateText=document.getElementById("selectedDateText"),summaryText=document.getElementById("summaryText"),scheduleNotice=document.getElementById("scheduleNotice"),clientStart=document.getElementById("clientStart"),clientEnd=document.getElementById("clientEnd"),durationSummary=document.getElementById("durationSummary"),copyButton=document.getElementById("copyButton"),copyOpenButton=document.getElementById("copyOpenButton"),clientName=document.getElementById("clientName"),clientContact=document.getElementById("clientContact"),groupSizeWrap=document.getElementById("groupSizeWrap"),groupSize=document.getElementById("groupSize");
+let view=new Date();view.setDate(1);let selectedDate=null,selectedStart=null,selectedEnd=null,selectedPackage=null,selectedRate=null,selectedPlayers=null,scheduleMap=new Map();
+const pad=n=>String(n).padStart(2,"0"),keyDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,niceDate=d=>d.toLocaleDateString("en-PH",{weekday:"long",month:"long",day:"numeric",year:"numeric"}),hourName=h=>h===24?"12:00 MN":`${h%12||12}:00 ${h<12?"AM":"PM"}`,hourLabel=h=>`${hourName(h)} – ${hourName(h+1)}`,statusFor=(date,h)=>scheduleMap.get(`${date}|${h}`)||"available";
 
-const calendar=document.getElementById("calendar"),
-monthLabel=document.getElementById("monthLabel"),
-slotsEl=document.getElementById("slots"),
-selectedDateText=document.getElementById("selectedDateText"),
-summaryText=document.getElementById("summaryText"),
-scheduleNotice=document.getElementById("scheduleNotice"),
-clientStart=document.getElementById("clientStart"),
-clientEnd=document.getElementById("clientEnd"),
-durationSummary=document.getElementById("durationSummary"),
-copyButton=document.getElementById("copyButton"),
-copyOpenButton=document.getElementById("copyOpenButton");
+// Menu
+const menuBtn=document.getElementById("menuBtn"),mainNav=document.getElementById("mainNav");
+menuBtn.onclick=()=>{const open=mainNav.classList.toggle("open");menuBtn.setAttribute("aria-expanded",String(open));};
+mainNav.querySelectorAll("a").forEach(a=>a.onclick=()=>{mainNav.classList.remove("open");menuBtn.setAttribute("aria-expanded","false");});
 
-let view=new Date(); view.setDate(1);
-let selectedDate=null,selectedStart=null,selectedEnd=null,selectedPackage=null,selectedRate=null,scheduleMap=new Map();
+// Mixed motivational + coaching sayings
+const sayings=[
+"Train the feet, trust the hands.","Consistency wins more rallies than one lucky winner.","Good fundamentals make pressure feel simple.","Move early. Set your feet. Choose the smart shot.","Small improvements become big points.","Patience at the kitchen can be your strongest weapon.","Confidence grows when your preparation becomes a habit.","Control first. Power follows.","Every rally is feedback — use it.","A calm reset can change the whole point.","Play the ball you have, not the shot you wish you had.","Better positioning creates easier shots."
+];
+const heroQuote=document.getElementById("heroQuote");let quoteIndex=-1;
+function nextQuote(){let n;do{n=Math.floor(Math.random()*sayings.length)}while(n===quoteIndex&&sayings.length>1);quoteIndex=n;heroQuote.classList.add("fade");setTimeout(()=>{heroQuote.textContent='“'+sayings[n]+'”';heroQuote.classList.remove("fade");},250);}
+nextQuote();setInterval(nextQuote,15000);
 
-const pad=n=>String(n).padStart(2,"0");
-const keyDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const niceDate=d=>d.toLocaleDateString("en-PH",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
-const hourName=h=>h===24?"12:00 MN":`${h%12||12}:00 ${h<12?"AM":"PM"}`;
-const hourLabel=h=>`${hourName(h)} – ${hourName(h+1)}`;
-const statusFor=(date,h)=>scheduleMap.get(`${date}|${h}`)||"available";
+async function loadMonthSchedule(){scheduleNotice.className="schedule-notice";scheduleNotice.textContent="Loading live schedule…";const start=new Date(view.getFullYear(),view.getMonth(),1),end=new Date(view.getFullYear(),view.getMonth()+1,0);const {data,error}=await db.from("public_schedule").select("slot_date,start_hour,status").gte("slot_date",keyDate(start)).lte("slot_date",keyDate(end));scheduleMap=new Map();if(error){scheduleNotice.classList.add("error");scheduleNotice.textContent="Live schedule could not load. Please refresh.";}else{(data||[]).forEach(r=>scheduleMap.set(`${r.slot_date}|${Number(r.start_hour)}`,r.status));scheduleNotice.textContent="Live schedule updated.";}renderCalendar();renderSlots();populateStartTimes();}
+function dayState(date){let b=0,u=0,a=0;for(let h=8;h<24;h++){const s=statusFor(date,h);if(s==="booked")b++;else if(s==="unavailable")u++;else a++;}if(b===16)return{cls:"full-booked",label:"Fully booked"};if(a===0)return{cls:"full-unavailable",label:"No availability"};if(b>0)return{cls:"partial-booked",label:`${b} booked`};if(u>0)return{cls:"partial-unavailable",label:"Limited"};return{cls:"",label:"Open"};}
+function renderCalendar(){calendar.innerHTML="";monthLabel.textContent=view.toLocaleDateString("en-PH",{month:"long",year:"numeric"});const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),today=new Date();today.setHours(0,0,0,0);for(let i=0;i<first;i++){const b=document.createElement("span");b.className="day blank";calendar.appendChild(b);}for(let n=1;n<=days;n++){const d=new Date(y,m,n),btn=document.createElement("button"),state=dayState(keyDate(d));btn.className="day";btn.innerHTML=`<span>${n}</span><small class="day-status">${state.label}</small>`;if(state.cls)btn.classList.add(state.cls);if(d<today)btn.classList.add("past");if(d.getTime()===today.getTime())btn.classList.add("today");if(selectedDate&&keyDate(d)===keyDate(selectedDate))btn.classList.add("selected");if(d>=today)btn.onclick=()=>{selectedDate=d;selectedStart=null;selectedEnd=null;renderCalendar();renderSlots();populateStartTimes();updateSummary();};calendar.appendChild(btn);}}
+function renderSlots(){slotsEl.innerHTML="";if(!selectedDate){selectedDateText.textContent="Choose a date";return;}const ds=keyDate(selectedDate);selectedDateText.textContent=niceDate(selectedDate);for(let h=8;h<24;h++){const b=document.createElement("button"),s=statusFor(ds,h);b.className="slot";b.textContent=hourLabel(h);b.type="button";if(s==="booked"){b.classList.add("booked");b.disabled=true;}else if(s==="unavailable"){b.classList.add("unavailable");b.disabled=true;}else{if(selectedStart!==null&&selectedEnd!==null&&h>=selectedStart&&h<selectedEnd)b.classList.add("in-range");b.onclick=()=>{selectedStart=h;populateEndTimes();renderSlots();updateSummary();};}slotsEl.appendChild(b);}}
+function populateStartTimes(){clientStart.innerHTML="";clientEnd.innerHTML="";if(!selectedDate){clientStart.disabled=true;clientEnd.disabled=true;clientStart.innerHTML="<option>Choose a date first</option>";clientEnd.innerHTML="<option>Choose start time</option>";durationSummary.textContent="Select a start and end time.";return;}const ds=keyDate(selectedDate),available=[];for(let h=8;h<24;h++)if(statusFor(ds,h)==="available")available.push(h);if(!available.length){clientStart.disabled=true;clientEnd.disabled=true;clientStart.innerHTML="<option>No available times</option>";clientEnd.innerHTML="<option>Fully booked / unavailable</option>";durationSummary.textContent="No available coaching time on this date.";return;}available.forEach(h=>{const o=document.createElement("option");o.value=h;o.textContent=hourName(h);clientStart.appendChild(o);});clientStart.disabled=false;if(selectedStart===null||!available.includes(selectedStart))selectedStart=available[0];clientStart.value=selectedStart;populateEndTimes();}
+function populateEndTimes(){clientEnd.innerHTML="";if(!selectedDate||selectedStart===null)return;const ds=keyDate(selectedDate);let last=selectedStart;for(let h=selectedStart;h<24;h++){if(statusFor(ds,h)!=="available")break;last=h+1;const o=document.createElement("option");o.value=last;o.textContent=hourName(last);clientEnd.appendChild(o);}if(!clientEnd.options.length){clientEnd.disabled=true;selectedEnd=null;durationSummary.textContent="No consecutive time available from this start time.";}else{clientEnd.disabled=false;if(selectedEnd===null||selectedEnd<=selectedStart||selectedEnd>last)selectedEnd=selectedStart+1;clientEnd.value=selectedEnd;updateDuration();}}
+function updateDuration(){if(selectedStart===null||selectedEnd===null)return;const hrs=selectedEnd-selectedStart;durationSummary.textContent=`Selected: ${hourName(selectedStart)} – ${hourName(selectedEnd)} • ${hrs} hour${hrs>1?"s":""}`;renderSlots();updateSummary();}
+clientStart.onchange=()=>{selectedStart=Number(clientStart.value);selectedEnd=null;populateEndTimes();};clientEnd.onchange=()=>{selectedEnd=Number(clientEnd.value);updateDuration();};
+document.querySelectorAll(".package-options button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".package-options button").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedPackage=b.dataset.package;selectedRate=b.dataset.rate;selectedPlayers=Number(b.dataset.players);if(selectedPackage==="3–5 Players"){groupSizeWrap.classList.remove("hidden");selectedPlayers=Number(groupSize.value);}else groupSizeWrap.classList.add("hidden");updateSummary();});groupSize.onchange=()=>{selectedPlayers=Number(groupSize.value);updateSummary();};clientName.oninput=updateSummary;clientContact.oninput=updateSummary;
+function bookingMessage(){if(!selectedDate||selectedStart===null||selectedEnd===null||!selectedPackage||!clientName.value.trim())return"";const hrs=selectedEnd-selectedStart;return `Hi Kyla! I would like to request a pickleball coaching session.
 
-async function loadMonthSchedule(){
-  scheduleNotice.className="schedule-notice";
-  scheduleNotice.textContent="Loading live schedule…";
-  const start=new Date(view.getFullYear(),view.getMonth(),1),end=new Date(view.getFullYear(),view.getMonth()+1,0);
-  const {data,error}=await db.from("public_schedule").select("slot_date,start_hour,status").gte("slot_date",keyDate(start)).lte("slot_date",keyDate(end));
-  scheduleMap=new Map();
-  if(error){
-    scheduleNotice.classList.add("error");
-    scheduleNotice.textContent="Live schedule could not load. Please refresh.";
-  } else {
-    (data||[]).forEach(r=>scheduleMap.set(`${r.slot_date}|${Number(r.start_hour)}`,r.status));
-    scheduleNotice.textContent="Live schedule updated.";
-  }
-  renderCalendar();
-  renderSlots();
-  populateStartTimes();
-}
+Name: ${clientName.value.trim()}
+Contact: ${clientContact.value.trim()||"Not provided"}
+Date: ${niceDate(selectedDate)}
+Time: ${hourName(selectedStart)} - ${hourName(selectedEnd)} (${hrs} hour${hrs>1?"s":""})
+Players: ${selectedPlayers}
+Coaching: ${selectedPackage}
+Rate: ${selectedRate}
+Venue: Santiago City, Isabela
 
-function dayState(date){
-  let b=0,u=0,a=0;
-  for(let h=8;h<24;h++){const s=statusFor(date,h);if(s==="booked")b++;else if(s==="unavailable")u++;else a++;}
-  if(b===16)return{cls:"full-booked",label:"Fully booked"};
-  if(a===0)return{cls:"full-unavailable",label:"No availability"};
-  if(b>0)return{cls:"partial-booked",label:`${b} booked`};
-  if(u>0)return{cls:"partial-unavailable",label:"Limited"};
-  return{cls:"",label:"Open"};
-}
-
-function renderCalendar(){
-  calendar.innerHTML="";
-  monthLabel.textContent=view.toLocaleDateString("en-PH",{month:"long",year:"numeric"});
-  const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),today=new Date();today.setHours(0,0,0,0);
-  for(let i=0;i<first;i++){const b=document.createElement("span");b.className="day blank";calendar.appendChild(b);}
-  for(let n=1;n<=days;n++){
-    const d=new Date(y,m,n),btn=document.createElement("button"),state=dayState(keyDate(d));
-    btn.className="day";
-    btn.innerHTML=`<span>${n}</span><small class="day-status">${state.label}</small>`;
-    if(state.cls)btn.classList.add(state.cls);
-    if(d<today)btn.classList.add("past");
-    if(d.getTime()===today.getTime())btn.classList.add("today");
-    if(selectedDate&&keyDate(d)===keyDate(selectedDate))btn.classList.add("selected");
-    if(d>=today)btn.onclick=()=>{
-      selectedDate=d;selectedStart=null;selectedEnd=null;
-      renderCalendar();renderSlots();populateStartTimes();updateSummary();
-    };
-    calendar.appendChild(btn);
-  }
-}
-
-function renderSlots(){
-  slotsEl.innerHTML="";
-  if(!selectedDate){selectedDateText.textContent="Choose a date";return;}
-  const ds=keyDate(selectedDate);selectedDateText.textContent=niceDate(selectedDate);
-  for(let h=8;h<24;h++){
-    const b=document.createElement("button"),s=statusFor(ds,h);
-    b.className="slot";b.textContent=hourLabel(h);b.type="button";
-    if(s==="booked"){b.classList.add("booked");b.disabled=true;}
-    else if(s==="unavailable"){b.classList.add("unavailable");b.disabled=true;}
-    else {
-      if(selectedStart!==null&&selectedEnd!==null&&h>=selectedStart&&h<selectedEnd)b.classList.add("in-range");
-      b.onclick=()=>{selectedStart=h;populateEndTimes();renderSlots();updateSummary();};
-    }
-    slotsEl.appendChild(b);
-  }
-}
-
-function populateStartTimes(){
-  clientStart.innerHTML="";
-  clientEnd.innerHTML="";
-  if(!selectedDate){
-    clientStart.disabled=true;clientEnd.disabled=true;
-    clientStart.innerHTML="<option>Choose a date first</option>";
-    clientEnd.innerHTML="<option>Choose start time</option>";
-    durationSummary.textContent="Select a start and end time.";
-    return;
-  }
-  const ds=keyDate(selectedDate);
-  const available=[];
-  for(let h=8;h<24;h++)if(statusFor(ds,h)==="available")available.push(h);
-  if(!available.length){
-    clientStart.disabled=true;clientEnd.disabled=true;
-    clientStart.innerHTML="<option>No available times</option>";
-    clientEnd.innerHTML="<option>Fully booked / unavailable</option>";
-    durationSummary.textContent="No available coaching time on this date.";
-    return;
-  }
-  available.forEach(h=>{const o=document.createElement("option");o.value=h;o.textContent=hourName(h);clientStart.appendChild(o);});
-  clientStart.disabled=false;
-  if(selectedStart===null||!available.includes(selectedStart))selectedStart=available[0];
-  clientStart.value=selectedStart;
-  populateEndTimes();
-}
-
-function populateEndTimes(){
-  clientEnd.innerHTML="";
-  if(!selectedDate||selectedStart===null)return;
-  const ds=keyDate(selectedDate);
-  let last=selectedStart;
-  for(let h=selectedStart;h<24;h++){
-    if(statusFor(ds,h)!=="available")break;
-    last=h+1;
-    const o=document.createElement("option");
-    o.value=last;o.textContent=hourName(last);
-    clientEnd.appendChild(o);
-  }
-  if(!clientEnd.options.length){
-    clientEnd.disabled=true;selectedEnd=null;durationSummary.textContent="No consecutive time available from this start time.";
-  } else {
-    clientEnd.disabled=false;
-    if(selectedEnd===null||selectedEnd<=selectedStart||selectedEnd>last)selectedEnd=selectedStart+1;
-    clientEnd.value=selectedEnd;
-    updateDuration();
-  }
-}
-
-function updateDuration(){
-  if(selectedStart===null||selectedEnd===null)return;
-  const hrs=selectedEnd-selectedStart;
-  durationSummary.textContent=`Selected: ${hourName(selectedStart)} – ${hourName(selectedEnd)} • ${hrs} hour${hrs>1?"s":""}`;
-  renderSlots();updateSummary();
-}
-
-clientStart.onchange=()=>{selectedStart=Number(clientStart.value);selectedEnd=null;populateEndTimes();};
-clientEnd.onchange=()=>{selectedEnd=Number(clientEnd.value);updateDuration();};
-
-document.querySelectorAll(".package-options button").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll(".package-options button").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");selectedPackage=b.dataset.package;selectedRate=b.dataset.rate;updateSummary();
-});
-
-function bookingMessage(){
-  if(!selectedDate||selectedStart===null||selectedEnd===null||!selectedPackage)return"";
-  const hrs=selectedEnd-selectedStart;
-  return `Hi Kyla! I would like to request a pickleball coaching session.\n\nDate: ${niceDate(selectedDate)}\nTime: ${hourName(selectedStart)} - ${hourName(selectedEnd)} (${hrs} hour${hrs>1?"s":""})\nCoaching: ${selectedPackage}\nRate: ${selectedRate}\nVenue: Santiago City, Isabela\n\nPlease confirm if this schedule is still available. Thank you!`;
-}
-
-function updateSummary(){
-  if(selectedDate&&selectedStart!==null&&selectedEnd!==null&&selectedPackage){
-    const hrs=selectedEnd-selectedStart;
-    summaryText.textContent=`${niceDate(selectedDate)} • ${hourName(selectedStart)}–${hourName(selectedEnd)} • ${hrs} hour${hrs>1?"s":""} • ${selectedPackage} • ${selectedRate}`;
-    copyButton.classList.remove("disabled");copyOpenButton.classList.remove("disabled");
-  } else {
-    summaryText.textContent="Select a date, time range, and coaching type.";
-    copyButton.classList.add("disabled");copyOpenButton.classList.add("disabled");
-  }
-}
-
-async function copyDetails(){
-  const text=bookingMessage();if(!text)return false;
-  try{await navigator.clipboard.writeText(text);showToast();return true;}
-  catch(e){
-    const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();
-    const ok=document.execCommand("copy");document.body.removeChild(ta);if(ok)showToast();return ok;
-  }
-}
-function showToast(){const t=document.getElementById("copyToast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800);}
-
-copyButton.onclick=copyDetails;
-copyOpenButton.onclick=async()=>{
-  if(!bookingMessage())return;
-  await copyDetails();
-  setTimeout(()=>window.open(FACEBOOK_URL,"_blank"),180);
-};
-
-document.getElementById("prevMonth").onclick=()=>{view.setMonth(view.getMonth()-1);selectedDate=null;selectedStart=null;selectedEnd=null;loadMonthSchedule();};
-document.getElementById("nextMonth").onclick=()=>{view.setMonth(view.getMonth()+1);selectedDate=null;selectedStart=null;selectedEnd=null;loadMonthSchedule();};
-
-loadMonthSchedule();
+Please confirm if this schedule is still available. Thank you!`;}
+function updateSummary(){if(selectedDate&&selectedStart!==null&&selectedEnd!==null&&selectedPackage&&clientName.value.trim()){const hrs=selectedEnd-selectedStart;summaryText.textContent=`${clientName.value.trim()} • ${niceDate(selectedDate)} • ${hourName(selectedStart)}–${hourName(selectedEnd)} • ${hrs} hr • ${selectedPlayers} player(s) • ${selectedPackage}`;copyButton.classList.remove("disabled");copyOpenButton.classList.remove("disabled");}else{summaryText.textContent="Select a date, time range, coaching type, and enter your name.";copyButton.classList.add("disabled");copyOpenButton.classList.add("disabled");}}
+async function copyDetails(){const text=bookingMessage();if(!text)return false;try{await navigator.clipboard.writeText(text);showToast();return true;}catch(e){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();const ok=document.execCommand("copy");document.body.removeChild(ta);if(ok)showToast();return ok;}}
+function showToast(){const t=document.getElementById("copyToast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800);}copyButton.onclick=copyDetails;copyOpenButton.onclick=async()=>{if(!bookingMessage())return;await copyDetails();setTimeout(()=>window.open(FACEBOOK_URL,"_blank"),180);};
+document.getElementById("prevMonth").onclick=()=>{view.setMonth(view.getMonth()-1);selectedDate=null;selectedStart=null;selectedEnd=null;loadMonthSchedule();};document.getElementById("nextMonth").onclick=()=>{view.setMonth(view.getMonth()+1);selectedDate=null;selectedStart=null;selectedEnd=null;loadMonthSchedule();};loadMonthSchedule();

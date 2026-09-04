@@ -1,115 +1,22 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111">
-  <title>Pickyla Admin</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="admin.css?v=7">
-</head>
-<body>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173d2a"><title>Pickyla Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet"><link rel="stylesheet" href="admin.css?v=9"></head><body>
 <div id="toast" class="toast"></div>
+<section id="loginView" class="auth-page"><div class="auth-card"><div class="admin-brand"><img class="brand-logo auth-logo" src="pickyla-logo-light.svg" alt="Pickyla"></div><span class="eyebrow">COACH ADMIN</span><h1>Manage coaching in seconds.</h1><p>Sign in with your Supabase admin account.</p><form id="loginForm"><label>Email<input id="email" type="email" required></label><label>Password<input id="password" type="password" required></label><button class="primary" type="submit">Sign In</button></form><small id="loginError"></small></div></section>
+<section id="adminView" class="hidden"><header class="admin-topbar"><div class="admin-brand brand-stack"><img class="brand-logo admin-logo" src="pickyla-logo-light.svg" alt="Pickyla"><small>Coach Admin</small></div><button id="logoutBtn" class="text-btn">Sign out</button></header><main class="admin-wrap">
+<section class="welcome"><span class="eyebrow">DASHBOARD</span><h1>Schedule, inquiries & earnings</h1><p>Fast booking, paste-to-autofill inquiries, conflict checking, reports, and calendar management.</p></section>
+<section class="report-grid"><article class="report-card"><span>Today</span><strong id="todayGross">₱0</strong><small id="todayMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>This Week</span><strong id="weekGross">₱0</strong><small id="weekMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>This Month</span><strong id="monthGross">₱0</strong><small id="monthMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>All Time</span><strong id="allGross">₱0</strong><small id="allMeta">0 sessions • ₱0 collected</small></article></section>
+<section class="mini-metrics"><div><strong id="monthHours">0</strong><span>Hours this month</span></div><div><strong id="pendingCount">0</strong><span>Pending inquiries</span></div><div><strong id="cancelCount">0</strong><span>Cancelled bookings</span></div></section>
+<section class="chart-grid"><article class="chart-card"><div class="chart-head"><span class="eyebrow">REPORT</span><h2>Last 14 days earnings</h2></div><canvas id="incomeChart"></canvas></article><article class="chart-card"><div class="chart-head"><span class="eyebrow">MIX</span><h2>Bookings by group size</h2></div><canvas id="mixChart"></canvas></article></section>
 
-<section id="loginView" class="auth-page">
-  <div class="auth-card"><div class="logo-ball">P</div><span class="eyebrow">PICKYLA ADMIN</span><h1>Manage coaching in seconds.</h1><p>Sign in with your Supabase admin account.</p>
-  <form id="loginForm"><label>Email<input id="email" type="email" required></label><label>Password<input id="password" type="password" required></label><button class="primary" type="submit">Sign In</button></form><small id="loginError"></small></div>
-</section>
+<section class="parser-panel panel"><div class="panel-head"><div><span class="eyebrow">PASTE FROM CLIENT</span><h2>Auto-fill a booking request</h2></div><span class="panel-tag">SMART PASTE</span></div><p class="panel-note">Paste the exact message copied from the client page. Pickyla will read the name, date, time, players and rate, then check for schedule conflicts before you confirm.</p><textarea id="pasteInquiry" rows="9" placeholder="Paste the client's booking request here..."></textarea><div id="parseResult" class="parse-result neutral">Waiting for a client message.</div><div class="parser-actions"><button id="parseBtn" class="secondary" type="button">Parse & Check</button><button id="savePendingBtn" class="soft" type="button" disabled>Save as Pending Inquiry</button></div></section>
 
-<section id="adminView" class="hidden">
-<header class="admin-topbar"><div><strong>PICKYLA</strong><span>Coach Admin</span></div><button id="logoutBtn" class="text-btn">Sign out</button></header>
-<main class="admin-wrap">
-  <section class="welcome"><span class="eyebrow">DASHBOARD</span><h1>Schedule & earnings</h1><p>Fast booking, one-tap cancellation, bulk unavailable dates, and income tracking.</p></section>
+<section class="quick-grid"><form id="quickBookingForm" class="panel"><div class="panel-head"><div><span class="eyebrow">NEW BOOKING</span><h2>Book a time range</h2></div><span class="panel-tag">FINALIZE</span></div><div class="form-grid"><label class="full">Date<input id="bookingDate" type="date" required></label><label>Start time<select id="bookingStart" required></select></label><label>End time<select id="bookingEnd" required></select></label><label class="full">Client name<input id="bookingClient" type="text" required placeholder="Client name"></label><label>Contact<input id="bookingContact" type="text" placeholder="Messenger / mobile"></label><label>Players<select id="participantCount"><option value="1">1 player</option><option value="2">2 players</option><option value="3">3 players</option><option value="4">4 players</option><option value="5">5 players</option></select></label><label>Rate<select id="rateMode"><option value="standard">Standard rate</option><option value="custom">Custom agreed rate</option></select></label><label>Rate / person / hour<input id="ratePerPerson" type="number" min="0" step="1" required></label><label>Amount received<input id="amountPaid" type="number" min="0" step="1" value="0"></label><label class="full">Notes<textarea id="bookingNotes" rows="2" placeholder="Optional"></textarea></label></div><div class="booking-total"><span>Booking total</span><strong id="bookingTotal">₱300</strong><small id="bookingCalc"></small></div><div id="bookingHint" class="hint">Choose a date to load available times.</div><button class="primary wide" type="submit">Review & Confirm Booking</button></form>
+<form id="blockForm" class="panel"><div class="panel-head"><div><span class="eyebrow">QUICK BLOCK</span><h2>Tournament / unavailable</h2></div><span class="panel-tag muted">BULK</span></div><div class="form-grid"><label>From date<input id="blockFromDate" type="date" required></label><label>To date<input id="blockToDate" type="date" required></label><label>Start time<select id="blockStart" required></select></label><label>End time<select id="blockEnd" required></select></label></div><div class="quick-presets"><button type="button" data-preset="whole">Whole day</button><button type="button" data-preset="morning">8 AM–12 PM</button><button type="button" data-preset="afternoon">12–5 PM</button><button type="button" data-preset="evening">5 PM–12 MN</button></div><p class="panel-note">Existing confirmed bookings are protected.</p><div class="bulk-actions"><button class="secondary" type="submit">Mark Unavailable</button><button class="soft-danger" type="button" id="clearUnavailableBtn">Clear Unavailable</button></div></form></section>
 
-  <section class="report-grid">
-    <article class="report-card"><span>Today</span><strong id="todayGross">₱0</strong><small id="todayMeta">0 sessions • ₱0 collected</small></article>
-    <article class="report-card"><span>This Week</span><strong id="weekGross">₱0</strong><small id="weekMeta">0 sessions • ₱0 collected</small></article>
-    <article class="report-card"><span>This Month</span><strong id="monthGross">₱0</strong><small id="monthMeta">0 sessions • ₱0 collected</small></article>
-    <article class="report-card"><span>All Time</span><strong id="allGross">₱0</strong><small id="allMeta">0 sessions • ₱0 collected</small></article>
-  </section>
+<section class="inquiry-section"><div class="section-row"><div><span class="eyebrow">INQUIRY TRACKER</span><h2>Pending conversations</h2></div><select id="inquiryFilter"><option value="active">Active</option><option value="new">New</option><option value="waiting">Waiting</option><option value="tentative">Tentative</option><option value="confirmed">Confirmed</option><option value="cancelled">Cancelled</option><option value="all">All</option></select></div><div id="inquiryList" class="inquiry-list"></div></section>
 
-  <section class="quick-grid">
-    <form id="quickBookingForm" class="panel">
-      <div class="panel-head"><div><span class="eyebrow">NEW BOOKING</span><h2>Book a time range</h2></div><span class="panel-tag">FAST</span></div>
-      <div class="form-grid">
-        <label class="full">Date<input id="bookingDate" type="date" required></label>
-        <label>Start time<select id="bookingStart" required></select></label>
-        <label>End time<select id="bookingEnd" required></select></label>
-        <label class="full">Client name<input id="bookingClient" type="text" required placeholder="Client name"></label>
-        <label>Contact<input id="bookingContact" type="text" placeholder="Messenger / mobile"></label>
-        <label>Players<select id="participantCount"><option value="1">1 player</option><option value="2">2 players</option><option value="3">3 players</option><option value="4">4 players</option><option value="5">5 players</option></select></label>
-        <label>Rate<select id="rateMode"><option value="standard">Standard rate</option><option value="custom">Custom agreed rate</option></select></label>
-        <label>Rate / person / hour<input id="ratePerPerson" type="number" min="0" step="1" required></label>
-        <label>Amount received<input id="amountPaid" type="number" min="0" step="1" value="0"></label>
-        <label class="full">Notes<textarea id="bookingNotes" rows="2" placeholder="Optional: promo, special agreement, court notes…"></textarea></label>
-      </div>
-      <div class="booking-total"><span>Booking total</span><strong id="bookingTotal">₱300</strong><small id="bookingCalc"></small></div>
-      <div id="bookingHint" class="hint">Choose a date to load available times.</div>
-      <button class="primary wide" type="submit">Save Booking</button>
-    </form>
-
-    <form id="blockForm" class="panel">
-      <div class="panel-head"><div><span class="eyebrow">QUICK BLOCK</span><h2>Tournament / unavailable</h2></div><span class="panel-tag muted">BULK</span></div>
-      <div class="form-grid">
-        <label>From date<input id="blockFromDate" type="date" required></label>
-        <label>To date<input id="blockToDate" type="date" required></label>
-        <label>Start time<select id="blockStart" required></select></label>
-        <label>End time<select id="blockEnd" required></select></label>
-      </div>
-      <div class="quick-presets"><button type="button" data-preset="whole">Whole day</button><button type="button" data-preset="morning">8 AM–12 PM</button><button type="button" data-preset="afternoon">12–5 PM</button><button type="button" data-preset="evening">5 PM–12 MN</button></div>
-      <p class="panel-note">Existing confirmed bookings are protected and will not be overwritten.</p>
-      <div class="bulk-actions"><button class="secondary" type="submit">Mark Unavailable</button><button class="soft-danger" type="button" id="clearUnavailableBtn">Clear Unavailable</button></div>
-    </form>
-  </section>
-
-  
-<section class="admin-calendar-section">
-  <div class="admin-calendar-head">
-    <div>
-      <span class="eyebrow">MONTH VIEW</span>
-      <h2>Calendar overview</h2>
-      <p>Tap a date to open its bookings and hourly schedule below.</p>
-    </div>
-    <div class="month-nav">
-      <button type="button" id="adminPrevMonth">‹</button>
-      <strong id="adminMonthLabel"></strong>
-      <button type="button" id="adminNextMonth">›</button>
-    </div>
-  </div>
-  <div class="admin-weekdays">
-    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-  </div>
-  <div id="adminCalendar" class="admin-calendar"></div>
-  <div class="admin-calendar-legend">
-    <span><i class="lg-open"></i>Open</span>
-    <span><i class="lg-partial"></i>Has booking</span>
-    <span><i class="lg-full"></i>Fully booked</span>
-    <span><i class="lg-blocked"></i>Unavailable / limited</span>
-  </div>
-</section>
-
-<section class="day-section">
-    <div class="day-head"><div><span class="eyebrow">DAY VIEW</span><h2>Bookings & hourly schedule</h2></div><label class="date-box">Date<input id="adminDate" type="date"></label></div>
-    <div class="status-summary"><div><strong id="availableCount">0</strong><span>Available hours</span></div><div><strong id="bookedCount">0</strong><span>Booked hours</span></div><div><strong id="unavailableCount">0</strong><span>Unavailable hours</span></div></div>
-
-    <div class="subhead"><div><span class="eyebrow">BOOKING GROUPS</span><h3>Cancel or update the whole booking</h3></div></div>
-    <section id="bookingGroups" class="booking-groups"></section>
-
-    <div class="subhead hours"><div><span class="eyebrow">HOURLY VIEW</span><h3>Individual time blocks</h3></div></div>
-    <section class="slot-list" id="slotList"></section>
-  </section>
-</main>
-</section>
-
-<dialog id="editDialog">
-<form method="dialog" class="editor" id="editForm">
-  <div class="editor-head"><div><span class="eyebrow">EDIT ONE HOUR</span><h2 id="editSlotTitle"></h2></div><button type="button" id="closeDialog" class="close-btn">×</button></div>
-  <input id="editHour" type="hidden">
-  <label>Status<select id="editStatus"><option value="available">Available</option><option value="booked">Booked</option><option value="unavailable">Unavailable</option></select></label>
-  <div id="clientFields"><label>Client Name<input id="clientName" type="text"></label><label>Contact<input id="contact" type="text"></label><label>Coaching Type<input id="coachingType" type="text"></label><label>Rate<input id="rate" type="number" min="0" step="1"></label><label>Notes<textarea id="notes" rows="3"></textarea></label></div>
-  <div class="editor-actions"><button type="button" id="deleteBtn" class="danger">Reset to Available</button><button type="submit" class="primary">Save Changes</button></div>
-</form>
-</dialog>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="admin.js?v=7"></script>
-</body></html>
+<section class="admin-calendar-section"><div class="admin-calendar-head"><div><span class="eyebrow">MONTH VIEW</span><h2>Calendar overview</h2><p>Tap a date to open its bookings and hourly schedule below.</p></div><div class="month-nav"><button type="button" id="adminPrevMonth">‹</button><strong id="adminMonthLabel"></strong><button type="button" id="adminNextMonth">›</button></div></div><div class="admin-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div id="adminCalendar" class="admin-calendar"></div><div class="admin-calendar-legend"><span><i class="lg-open"></i>Open</span><span><i class="lg-partial"></i>Has booking</span><span><i class="lg-full"></i>Fully booked</span><span><i class="lg-blocked"></i>Unavailable / limited</span></div></section>
+<section class="day-section"><div class="day-head"><div><span class="eyebrow">DAY VIEW</span><h2>Bookings & hourly schedule</h2></div><label class="date-box">Date<input id="adminDate" type="date"></label></div><div class="status-summary"><div><strong id="availableCount">0</strong><span>Available hours</span></div><div><strong id="bookedCount">0</strong><span>Booked hours</span></div><div><strong id="unavailableCount">0</strong><span>Unavailable hours</span></div></div><div class="subhead"><div><span class="eyebrow">BOOKING GROUPS</span><h3>Cancel or update the whole booking</h3></div></div><section id="bookingGroups" class="booking-groups"></section><div class="subhead hours"><div><span class="eyebrow">HOURLY VIEW</span><h3>Individual time blocks</h3></div></div><section class="slot-list" id="slotList"></section></section>
+</main></section>
+<dialog id="editDialog"><form method="dialog" class="editor" id="editForm"><div class="editor-head"><div><span class="eyebrow">EDIT ONE HOUR</span><h2 id="editSlotTitle"></h2></div><button type="button" id="closeDialog" class="close-btn">×</button></div><input id="editHour" type="hidden"><label>Status<select id="editStatus"><option value="available">Available</option><option value="booked">Booked</option><option value="unavailable">Unavailable</option></select></label><div id="clientFields"><label>Client Name<input id="clientName" type="text"></label><label>Contact<input id="contact" type="text"></label><label>Coaching Type<input id="coachingType" type="text"></label><label>Rate<input id="rate" type="number" min="0" step="1"></label><label>Notes<textarea id="notes" rows="3"></textarea></label></div><div class="editor-actions"><button type="button" id="deleteBtn" class="danger">Reset to Available</button><button type="submit" class="primary">Save Changes</button></div></form></dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="admin.js?v=9"></script></body></html>

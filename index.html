@@ -3,37 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#111111">
+  <meta name="theme-color" content="#173d2a">
   <title>Pickyla | Pickleball Coaching</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="#home"><span class="brand-ball">P</span><span>PICKYLA</span></a>
-  <a class="small-book" href="#booking">Book a Session</a>
+  <a class="brand" href="#home" aria-label="Pickyla home">
+    <img class="brand-logo" src="pickyla-logo-light.svg" alt="Pickyla">
+  </a>
+  <nav id="mainNav" class="main-nav">
+    <a href="#home">Home</a><a href="#about">Coach</a><a href="#rates">Rates</a><a href="#booking">Schedule</a><a href="#contact">Contact</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="small-book" href="#booking">Book</a>
+    <button id="menuBtn" class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
 </header>
 
 <main>
   <section class="hero" id="home">
     <div class="hero-photo"><img src="kyla-coach.jpg" alt="Kyla Nicole Soriano playing pickleball"><div class="photo-shade"></div></div>
     <div class="hero-copy">
+      <img class="hero-logo" src="pickyla-logo-dark.svg" alt="Pickyla Pickleball Coaching">
       <span class="eyebrow">PICKLEBALL COACHING • SANTIAGO CITY</span>
       <h1>Build your game.<br><em>One rally at a time.</em></h1>
-      <p>Beginner-friendly coaching with Kyla Nicole Soriano — tournament podium finisher and passionate pickleball player.</p>
+      <p class="hero-lead">Beginner-friendly coaching with Kyla Nicole Soriano — tournament podium finisher and passionate pickleball player.</p>
+      <div class="quote-card"><span>COURT NOTE</span><blockquote id="heroQuote"></blockquote></div>
       <div class="hero-actions"><a class="btn primary" href="#booking">View Schedule</a><a class="btn ghost" href="#rates">See Rates</a></div>
     </div>
   </section>
 
-  <section class="intro section">
+  <section class="intro section" id="about">
     <span class="eyebrow dark">MEET YOUR COACH</span><h2>Kyla Nicole Soriano</h2>
     <p>Hi! I’m Kyla, a passionate pickleball player and tournament podium finisher. I’m offering beginner-friendly pickleball coaching focused on building your fundamentals, confidence, consistency, and overall game. Whether you’re just starting or looking to improve, let’s work on your game together!</p>
     <div class="quick-info">
       <div><b>📍</b><span><strong>Santiago City</strong><small>Isabela</small></span></div>
       <div><b>🕗</b><span><strong>8 AM – 12 MN</strong><small>Monday–Sunday</small></span></div>
-      <div><b>⏱</b><span><strong>1–16 Hours</strong><small>Choose consecutive available hours</small></span></div>
+      <div><b>⏱</b><span><strong>Flexible Duration</strong><small>Choose consecutive available hours</small></span></div>
     </div>
   </section>
 
@@ -47,70 +57,43 @@
   </section>
 
   <section class="booking section" id="booking">
-    <div class="section-heading">
-      <span class="eyebrow dark">LIVE SCHEDULE</span>
-      <h2>Choose your date & duration.</h2>
-      <p>Pick a date, then choose a start and end time. The end-time list automatically stops before the next booked or unavailable hour.</p>
-    </div>
-
+    <div class="section-heading"><span class="eyebrow dark">LIVE SCHEDULE</span><h2>Choose your date & duration.</h2><p>Pick a date, choose a start and end time, then generate a ready-to-send booking request.</p></div>
     <div class="booking-panel">
       <div id="scheduleNotice" class="schedule-notice">Loading live schedule…</div>
-
       <div class="calendar-head"><button id="prevMonth" aria-label="Previous month">‹</button><h3 id="monthLabel"></h3><button id="nextMonth" aria-label="Next month">›</button></div>
       <div class="weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
       <div class="calendar" id="calendar"></div>
-
-      <div class="calendar-legend">
-        <span><i class="cal-open"></i>Open</span>
-        <span><i class="cal-partial"></i>Has booking</span>
-        <span><i class="cal-full"></i>Fully booked</span>
-        <span><i class="cal-blocked"></i>Unavailable / limited</span>
-      </div>
+      <div class="calendar-legend"><span><i class="cal-open"></i>Open</span><span><i class="cal-partial"></i>Has booking</span><span><i class="cal-full"></i>Fully booked</span><span><i class="cal-blocked"></i>Unavailable / limited</span></div>
 
       <div class="slot-area">
         <span class="step">STEP 2</span><h3 id="selectedDateText">Choose a date</h3>
-
-        <div class="range-picker">
-          <label>Start time<select id="clientStart" disabled><option>Choose a date first</option></select></label>
-          <label>End time<select id="clientEnd" disabled><option>Choose start time</option></select></label>
-        </div>
-
+        <div class="range-picker"><label>Start time<select id="clientStart" disabled><option>Choose a date first</option></select></label><label>End time<select id="clientEnd" disabled><option>Choose start time</option></select></label></div>
         <div id="durationSummary" class="duration-summary">Select a start and end time.</div>
-
-        <div class="availability-title">Hourly availability</div>
-        <div class="slots" id="slots"></div>
+        <div class="availability-title">Hourly availability</div><div class="slots" id="slots"></div>
         <div class="slot-legend"><span><i class="available-dot"></i>Available</span><span><i class="booked-dot"></i>Booked</span><span><i class="unavailable-dot"></i>Unavailable</span></div>
       </div>
 
       <div class="package-area">
         <span class="step">STEP 3</span><h3>Choose coaching type</h3>
-        <div class="package-options">
-          <button data-package="1-on-1" data-rate="₱300/hour">1-on-1 <small>₱300/hr</small></button>
-          <button data-package="2 Players" data-rate="₱250 each/hour">2 Players <small>₱250 each</small></button>
-          <button data-package="3–5 Players" data-rate="₱200 each/hour">3–5 Players <small>₱200 each</small></button>
-        </div>
+        <div class="package-options"><button data-package="1-on-1" data-rate="₱300/hour" data-players="1">1-on-1 <small>₱300/hr</small></button><button data-package="2 Players" data-rate="₱250 each/hour" data-players="2">2 Players <small>₱250 each</small></button><button data-package="3–5 Players" data-rate="₱200 each/hour" data-players="3">3–5 Players <small>₱200 each</small></button></div>
+        <div id="groupSizeWrap" class="group-size hidden"><label>Exact number of players<select id="groupSize"><option value="3">3 players</option><option value="4">4 players</option><option value="5">5 players</option></select></label></div>
       </div>
 
-      <div class="summary">
-        <div><span>BOOKING REQUEST</span><strong id="summaryText">Select a date, time range, and coaching type.</strong></div>
+      <div class="request-details">
+        <span class="step">STEP 4</span><h3>Your details</h3>
+        <div class="request-grid"><label>Name<input id="clientName" type="text" placeholder="Your name"></label><label>Contact (optional)<input id="clientContact" type="text" placeholder="Messenger / mobile"></label></div>
       </div>
 
-      <div class="booking-actions-client">
-        <button id="copyButton" class="btn copy-btn disabled" type="button">Copy Booking Details</button>
-        <button id="copyOpenButton" class="btn facebook disabled" type="button">Copy & Open Facebook</button>
-      </div>
-      <p class="booking-help">“Copy & Open Facebook” copies the ready-made message first, then opens Kyla’s Facebook. Paste the message into Messenger and send.</p>
+      <div class="summary"><div><span>BOOKING REQUEST</span><strong id="summaryText">Select a date, time range, coaching type, and enter your name.</strong></div></div>
+      <div class="booking-actions-client"><button id="copyButton" class="btn copy-btn disabled" type="button">Copy Booking Details</button><button id="copyOpenButton" class="btn facebook disabled" type="button">Copy & Open Facebook</button></div>
+      <p class="booking-help">The booking message is copied first. Facebook opens next — paste the message into Messenger and send it to Kyla for final confirmation.</p>
     </div>
   </section>
 
-  <section class="contact section"><span class="eyebrow">CONNECT</span><h2>Ready to play?</h2><p>Questions about your session? Message Kyla on Facebook.</p><a class="btn primary" href="https://www.facebook.com/share/19JD1ACiCu/" target="_blank" rel="noopener">Facebook • Kyla Nicole Soriano / Pickyla</a></section>
+  <section class="contact section" id="contact"><span class="eyebrow">CONNECT</span><h2>Ready to play?</h2><p>Questions about your session? Message Kyla on Facebook.</p><a class="btn primary" href="https://www.facebook.com/share/19JD1ACiCu/" target="_blank" rel="noopener">Facebook • Kyla Nicole Soriano / Pickyla</a></section>
 </main>
-
-<footer><strong>PICKYLA</strong><span>Pickleball Coaching • Santiago City, Isabela</span></footer>
-
+<footer><img class="footer-logo" src="pickyla-logo-dark.svg" alt="Pickyla"><span>Pickleball Coaching • Santiago City, Isabela</span></footer>
 <div id="copyToast" class="copy-toast">Booking details copied!</div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=7"></script>
-</body>
-</html>
+<script src="script.js?v=9"></script>
+</body></html>

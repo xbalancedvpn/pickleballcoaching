@@ -1,53 +1,26 @@
-# Pickyla Coaching v4
+# Pickyla Coaching v8
 
-## New in v4
-- One-tap whole-booking cancellation: all hours tied to that booking become available again.
-- Standard rate presets based on player count:
-  - 1 player = PHP 300/person/hour
-  - 2 players = PHP 250/person/hour
-  - 3-5 players = PHP 200/person/hour
-- Custom agreed rate option.
-- Booking total is calculated automatically.
-- Amount received tracking.
-- Earnings dashboard: Today, This Week, This Month, All Time.
-- Quick tournament/unavailable presets.
-- Public calendar:
-  - Green = open
-  - Amber = has booking but still has open hours
-  - Red = all 16 hours are booked
-  - Gray = no availability due to blocks / limited availability
+## New in v8
+- Mobile/desktop navigation menu on the client page.
+- Random mixed pickleball sayings on load and every 15 seconds.
+- Client name/contact included in the generated booking request.
+- Exact group size selector for 3–5 player requests.
+- Admin Smart Paste: paste the client-generated script, auto-fill the booking form, and check overlaps.
+- Final booking confirmation dialog before saving.
+- Pending Inquiry tracker with New / Waiting / Tentative / Confirmed / Cancelled statuses.
+- Daily/weekly/monthly/all-time summary plus charts.
+- Month calendar + day view retained.
+- Pickyla green/cream UI restored. Black/yellow is limited to the temporary logo mark direction only.
 
-## IMPORTANT
-Run `supabase-v4-migration.sql` once BEFORE uploading the v4 website files.
+## SQL
+Run `supabase-v8-migration.sql` ONCE before using Pending Inquiries. The existing booking system still uses the v4 tables you already created.
 
-## Legacy v3 bookings
-Old v3 bookings do not have a booking group ID. They remain visible in Hourly View, but the new one-tap whole-booking cancellation and earnings report are designed for bookings created in v4 onward.
-
-## Admin URL
-https://xbalancedvpn.github.io/pickleballcoaching/admin.html
+## Logo
+The website currently uses a lightweight Signature + Monogram placeholder. Separate premium logo concepts are generated for selection; after choosing one, replace the placeholder with the final logo asset.
 
 
-## v5 client booking improvements
-- Client can choose Start Time + End Time for multi-hour booking requests.
-- End Time only shows consecutive available hours and stops before a booked/unavailable slot.
-- Ready-made booking message is generated automatically.
-- `Copy Booking Details` copies the message.
-- `Copy & Open Facebook` copies the message then opens Kyla's Facebook so the client can paste it into Messenger.
-- No new Supabase SQL migration is needed if v4 is already working.
-
-Note: Facebook/Messenger does not reliably support pre-filling arbitrary message text from a normal website link, so copy-then-open is the most dependable flow.
-
-
-## v6
-- Restored Admin Month Calendar.
-- Tap a date to open Booking Groups and Hourly View.
-- Same color coding as public calendar.
-- No new SQL required.
-
-
-## v7
-- Added cache-busting on admin/public CSS and JS (`?v=7`) so GitHub Pages loads the newest files.
-- Kept the restored Admin Month Calendar.
-- Switched theme to a Nanomoly-inspired Black / Yellow / White palette.
-- No new SQL required.
-- After upload, do a hard refresh if your phone still shows old styles.
+## V9 final polish
+- Added integrated Pickyla premium logo system (light + dark SVG variants + icon).
+- Public page header, hero, and footer now use the approved Pickyla branding.
+- Admin login and topbar updated to use the same logo set.
+- Existing v8 features remain: menu, rotating sayings, calendar scheduling, copy/open Facebook flow, inquiry parser, reports, and booking group actions.

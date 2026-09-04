@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Pickyla icon">
+  <defs>
+    <linearGradient id="yl" x1="0" x2="1">
+      <stop offset="0%" stop-color="#f5c400"/>
+      <stop offset="100%" stop-color="#ffd84c"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#111111"/>
+  <path d="M34 20h35c22 0 39 17 39 38s-17 38-39 38H34l11-12h24c15 0 27-12 27-26s-12-26-27-26H41z" fill="#ffffff"/>
+  <path d="M20 90l25-28h43L77 74H50l-14 16z" fill="url(#yl)"/>
+  <path d="M24 40h52L65 52H34z" fill="url(#yl)"/>
+  <circle cx="83" cy="58" r="13" fill="url(#yl)"/>
+  <circle cx="77" cy="52" r="2.3" fill="#111111"/>
+  <circle cx="87" cy="49" r="2.3" fill="#111111"/>
+  <circle cx="91" cy="58" r="2.3" fill="#111111"/>
+  <circle cx="84" cy="66" r="2.3" fill="#111111"/>
+  <circle cx="75" cy="63" r="2.3" fill="#111111"/>
+</svg>
