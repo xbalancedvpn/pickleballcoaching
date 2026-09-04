@@ -1,26 +1,25 @@
-# Pickyla Pickleball Coaching
+# Pickyla Pickleball Coaching v2
 
-Static, mobile-first coaching schedule and booking website for Kyla Nicole Soriano.
+Public coaching page plus Supabase-powered admin schedule.
 
 ## Schedule
-Monday–Sunday, 8:00 AM–12:00 Midnight. All sessions use fixed 1-hour slots.
+Monday-Sunday, 8:00 AM-12:00 Midnight, fixed 1-hour slots.
 
 ## Rates
 - 1-on-1: PHP 300/hour
 - 2 Players: PHP 250/person/hour
-- 3–5 Players: PHP 200/person/hour
+- 3-5 Players: PHP 200/person/hour
 
-## Updating booked/unavailable slots
-Open `script.js` and edit the `BOOKED` or `UNAVAILABLE` sets.
+## Admin page
+After upload to GitHub Pages:
+https://xbalancedvpn.github.io/pickleballcoaching/admin.html
 
-Example:
-```js
-const BOOKED = new Set([
-  "2026-09-05|18", // Sep 5, 6 PM–7 PM
-]);
-```
+## Supabase setup
+1. Open Supabase > SQL Editor.
+2. Run `supabase-setup.sql`.
+3. Create your admin user in Authentication > Users.
+4. Disable public email sign-ups in Authentication > Sign In / Providers after creating the admin user.
 
-Hours use 24-hour format. `8` = 8 AM, `13` = 1 PM, `23` = 11 PM.
+The public website only reads date, hour, and status. Client name, contact, rate, and notes are only available to authenticated admin users.
 
-## Hosting
-This is a static website and can be deployed on Vercel or GitHub Pages.
+Never add a Supabase Secret key or service_role key to these website files.
