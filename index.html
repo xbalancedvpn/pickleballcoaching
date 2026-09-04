@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#173d2a" />
+  <title>Pickyla | Pickleball Coaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home">
+      <span class="brand-ball">P</span>
+      <span>PICKYLA</span>
+    </a>
+    <a class="small-book" href="#booking">Book a Session</a>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-photo">
+        <img src="kyla-coach.jpg" alt="Kyla Nicole Soriano playing pickleball">
+        <div class="photo-shade"></div>
+      </div>
+      <div class="hero-copy">
+        <span class="eyebrow">PICKLEBALL COACHING • SANTIAGO CITY</span>
+        <h1>Build your game.<br><em>One rally at a time.</em></h1>
+        <p>Beginner-friendly coaching with Kyla Nicole Soriano — tournament podium finisher and passionate pickleball player.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#booking">View Schedule</a>
+          <a class="btn ghost" href="#rates">See Rates</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro section">
+      <span class="eyebrow dark">MEET YOUR COACH</span>
+      <h2>Kyla Nicole Soriano</h2>
+      <p>Hi! I’m Kyla, a passionate pickleball player and tournament podium finisher. I’m offering beginner-friendly pickleball coaching focused on building your fundamentals, confidence, consistency, and overall game. Whether you’re just starting or looking to improve, let’s work on your game together!</p>
+      <div class="quick-info">
+        <div><b>📍</b><span><strong>Santiago City</strong><small>Isabela</small></span></div>
+        <div><b>🕗</b><span><strong>8 AM – 12 MN</strong><small>Monday–Sunday</small></span></div>
+        <div><b>⏱</b><span><strong>1 Hour</strong><small>Fixed session slots</small></span></div>
+      </div>
+    </section>
+
+    <section class="rates section" id="rates">
+      <div class="section-heading">
+        <span class="eyebrow dark">COACHING RATES</span>
+        <h2>Train your way.</h2>
+        <p>Choose the setup that works for you. Every booking is for a 1-hour coaching session.</p>
+      </div>
+      <div class="rate-grid">
+        <article class="rate-card featured">
+          <span class="pill">PERSONAL</span>
+          <h3>1-on-1</h3>
+          <div class="price"><span>₱</span>300</div>
+          <p>per hour</p>
+          <small>Focused coaching built around your pace and fundamentals.</small>
+        </article>
+        <article class="rate-card">
+          <span class="pill">WITH A PARTNER</span>
+          <h3>2 Players</h3>
+          <div class="price"><span>₱</span>250</div>
+          <p>per person / hour</p>
+          <small>Learn, rally, and improve together with a training partner.</small>
+        </article>
+        <article class="rate-card">
+          <span class="pill">GROUP</span>
+          <h3>3–5 Players</h3>
+          <div class="price"><span>₱</span>200</div>
+          <p>per person / hour</p>
+          <small>A fun group session for friends who want to learn together.</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="booking section" id="booking">
+      <div class="section-heading">
+        <span class="eyebrow dark">BOOK A SESSION</span>
+        <h2>Pick your date & time.</h2>
+        <p>Select an available 1-hour slot. Your booking is finalized only after Kyla confirms it on Facebook.</p>
+      </div>
+
+      <div class="booking-panel">
+        <div class="calendar-head">
+          <button id="prevMonth" aria-label="Previous month">‹</button>
+          <h3 id="monthLabel"></h3>
+          <button id="nextMonth" aria-label="Next month">›</button>
+        </div>
+        <div class="weekdays">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="calendar" id="calendar"></div>
+
+        <div class="legend">
+          <span><i class="available-dot"></i>Available</span>
+          <span><i class="booked-dot"></i>Booked</span>
+          <span><i class="unavailable-dot"></i>Unavailable</span>
+        </div>
+
+        <div class="slot-area">
+          <div>
+            <span class="step">STEP 2</span>
+            <h3 id="selectedDateText">Choose a date</h3>
+          </div>
+          <div class="slots" id="slots"></div>
+        </div>
+
+        <div class="package-area">
+          <span class="step">STEP 3</span>
+          <h3>Choose coaching type</h3>
+          <div class="package-options">
+            <button data-package="1-on-1" data-rate="₱300/hour">1-on-1 <small>₱300/hr</small></button>
+            <button data-package="2 Players" data-rate="₱250 each/hour">2 Players <small>₱250 each</small></button>
+            <button data-package="3–5 Players" data-rate="₱200 each/hour">3–5 Players <small>₱200 each</small></button>
+          </div>
+        </div>
+
+        <div class="summary" id="summary">
+          <div>
+            <span>YOUR SESSION</span>
+            <strong id="summaryText">Select a date, time, and coaching type.</strong>
+          </div>
+          <a id="bookButton" class="btn facebook disabled" href="#" target="_blank" rel="noopener">Book via Facebook</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact section">
+      <span class="eyebrow dark">CONNECT</span>
+      <h2>Ready to play?</h2>
+      <p>Questions about your first session? Message Kyla on Facebook.</p>
+      <a class="btn primary" href="https://www.facebook.com/share/19JD1ACiCu/" target="_blank" rel="noopener">Facebook • Kyla Nicole Soriano / Pickyla</a>
+    </section>
+  </main>
+
+  <footer>
+    <strong>PICKYLA</strong>
+    <span>Pickleball Coaching • Santiago City, Isabela</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
