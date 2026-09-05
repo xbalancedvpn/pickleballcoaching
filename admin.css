@@ -70,3 +70,20 @@ body{background:#fbfaf7;color:#111}
   .auth-mark{height:42px}.auth-wordmark{height:34px;max-width:220px}
   .admin-mark{height:28px}.admin-wordmark{height:22px;max-width:170px}
 }
+
+
+/* ===== v15 weekly schedule image generator ===== */
+.weekly-export{margin:0 0 28px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 12px 32px rgba(24,47,31,.05)}
+.weekly-export-head{display:flex;justify-content:space-between;align-items:flex-start;gap:22px}
+.weekly-export-title{display:flex;align-items:center;gap:16px;min-width:0}
+.weekly-export-title img{width:70px;height:70px;object-fit:cover;border-radius:16px;background:#111;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.weekly-export-title h2{font:800 24px Manrope;margin:5px 0 5px}
+.weekly-export-title p{margin:0;color:var(--muted);font-size:12px;line-height:1.55;max-width:540px}
+.weekly-export-controls{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.weekly-export-controls label{min-width:180px}
+.weekly-export-meta{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:18px;padding:12px 14px;border-radius:12px;background:#fff9df;border:1px solid #f2df96}
+.weekly-export-meta strong{font-size:12px;color:#111}.weekly-export-meta span{font-size:10px;color:var(--muted)}
+.weekly-preview-wrap{margin-top:16px;border:1px solid var(--line);border-radius:16px;background:#f6f6f4;padding:12px}
+.weekly-preview-wrap img{display:block;width:100%;height:auto;border-radius:11px;background:#fff;border:1px solid #ece9df}
+.weekly-preview-actions{display:flex;justify-content:flex-end;margin-top:10px}
+@media(max-width:760px){.weekly-export-head{flex-direction:column}.weekly-export-title{align-items:flex-start}.weekly-export-title img{width:58px;height:58px}.weekly-export-controls{width:100%;justify-content:stretch}.weekly-export-controls label,.weekly-export-controls button{width:100%}.weekly-export-meta{align-items:flex-start;flex-direction:column}}
