@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=17b">
+  <link rel="stylesheet" href="style.css?v=17c">
 
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -78,12 +78,13 @@
   </section>
 
   <section class="rates section" id="rates">
-    <div class="section-heading"><span class="eyebrow dark">COACHING RATES</span><h2>Train your way.</h2><p>Standard coaching rates. Special agreed rates may also be arranged directly with Kyla.</p></div>
+    <div class="section-heading"><span class="eyebrow dark">COACHING RATES</span><h2>Train your way.</h2><p>Standard coaching rates. Special agreed rates may also be arranged directly with Kyla for regular clients.</p></div>
     <div class="rate-grid">
-      <article class="rate-card featured"><span class="pill">PERSONAL</span><h3>1-on-1</h3><div class="price"><span>₱</span>300</div><p>per hour</p></article>
-      <article class="rate-card"><span class="pill">WITH A PARTNER</span><h3>2 Players</h3><div class="price"><span>₱</span>250</div><p>each / hour</p></article>
-      <article class="rate-card"><span class="pill">GROUP</span><h3>3–5 Players</h3><div class="price"><span>₱</span>200</div><p>each / hour</p></article>
+      <article class="rate-card featured"><span class="pill">PERSONAL</span><h3>1-on-1</h3><div class="price"><span>₱</span>400</div><p>per hour</p></article>
+      <article class="rate-card"><span class="pill">PARTNERS</span><h3>2–3 Players</h3><div class="price"><span>₱</span>300</div><p>each / hour</p></article>
+      <article class="rate-card"><span class="pill">GROUP</span><h3>4–8 Players</h3><div class="price"><span>₱</span>250</div><p>each / hour</p></article>
     </div>
+    <div class="court-fee-note"><strong>Court fee is not included in the coaching rate.</strong><span>Typical court fees range from ₱100–₱600 depending on the venue, time, peak hours, weekdays, or weekends. The final court fee is confirmed separately.</span></div>
   </section>
 
   <section id="testimonialsSection" class="testimonials section hidden">
@@ -110,8 +111,8 @@
 
       <div class="package-area">
         <span class="step">STEP 3</span><h3>Choose coaching type</h3>
-        <div class="package-options"><button data-package="1-on-1" data-rate="₱300/hour" data-players="1">1-on-1 <small>₱300/hr</small></button><button data-package="2 Players" data-rate="₱250 each/hour" data-players="2">2 Players <small>₱250 each</small></button><button data-package="3–5 Players" data-rate="₱200 each/hour" data-players="3">3–5 Players <small>₱200 each</small></button></div>
-        <div id="groupSizeWrap" class="group-size hidden"><label>Exact number of players<select id="groupSize"><option value="3">3 players</option><option value="4">4 players</option><option value="5">5 players</option></select></label></div>
+        <div class="package-options"><button data-package="1-on-1" data-rate="₱400/hour" data-players="1" data-min="1" data-max="1">1-on-1 <small>₱400/hr</small></button><button data-package="Partners (2–3 Players)" data-rate="₱300 each/hour" data-players="2" data-min="2" data-max="3">Partners <small>2–3 players • ₱300 each</small></button><button data-package="Group (4–8 Players)" data-rate="₱250 each/hour" data-players="4" data-min="4" data-max="8">Group <small>4–8 players • ₱250 each</small></button></div>
+        <div id="groupSizeWrap" class="group-size hidden"><label>Exact number of players<select id="groupSize"></select></label></div>
       </div>
 
       <div id="coachingContext" class="coaching-context hidden"></div>
@@ -123,7 +124,7 @@
       <div class="summary"><div><span>BOOKING REQUEST</span><strong id="summaryText">Select a date, time range, coaching type, and enter your name.</strong></div></div>
       <div class="booking-actions-client"><button id="sendRequestButton" class="btn request-submit disabled" type="button">Send Request to Admin</button><button id="copyButton" class="btn copy-btn disabled" type="button">Copy Booking Details</button><button id="copyOpenButton" class="btn facebook disabled" type="button">Copy & Open Facebook</button></div>
       <div id="requestSubmitStatus" class="request-submit-status hidden"></div>
-      <p class="booking-help">Send Request adds your request to Pickyla Admin for review; it does not reserve the slot until Kyla confirms it. You can also copy the details and continue in Messenger.</p>
+      <p class="booking-help">Send Request adds your request to Pickyla Admin for review; it does not reserve the slot until Kyla confirms it. Court fee is separate from the coaching rate and depends on the selected venue/time. You can also copy the details and continue in Messenger.</p>
     </div>
   </section>
 
@@ -145,5 +146,5 @@
 
 <div id="copyToast" class="copy-toast">Booking details copied!</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=17b"></script>
+<script src="script.js?v=17c"></script>
 </body></html>

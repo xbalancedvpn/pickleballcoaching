@@ -37,7 +37,8 @@ function populateStartTimes(){clientStart.innerHTML="";clientEnd.innerHTML="";if
 function populateEndTimes(){clientEnd.innerHTML="";if(!selectedDate||selectedStart===null)return;const ds=keyDate(selectedDate);let last=selectedStart;for(let h=selectedStart;h<24;h++){if(statusFor(ds,h)!=="available")break;last=h+1;const o=document.createElement("option");o.value=last;o.textContent=hourName(last);clientEnd.appendChild(o);}if(!clientEnd.options.length){clientEnd.disabled=true;selectedEnd=null;durationSummary.textContent="No consecutive time available from this start time.";}else{clientEnd.disabled=false;if(selectedEnd===null||selectedEnd<=selectedStart||selectedEnd>last)selectedEnd=selectedStart+1;clientEnd.value=selectedEnd;updateDuration();}}
 function updateDuration(){if(selectedStart===null||selectedEnd===null)return;const hrs=selectedEnd-selectedStart;durationSummary.textContent=`Selected: ${hourName(selectedStart)} – ${hourName(selectedEnd)} • ${hrs} hour${hrs>1?"s":""}`;renderSlots();updateSummary();}
 clientStart.onchange=()=>{selectedStart=Number(clientStart.value);selectedEnd=null;populateEndTimes();};clientEnd.onchange=()=>{selectedEnd=Number(clientEnd.value);updateDuration();};
-document.querySelectorAll(".package-options button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".package-options button").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedPackage=b.dataset.package;selectedRate=b.dataset.rate;selectedPlayers=Number(b.dataset.players);if(selectedPackage==="3–5 Players"){groupSizeWrap.classList.remove("hidden");selectedPlayers=Number(groupSize.value);}else groupSizeWrap.classList.add("hidden");updateSummary();});groupSize.onchange=()=>{selectedPlayers=Number(groupSize.value);updateSummary();};clientName.oninput=updateSummary;clientContact.oninput=updateSummary;
+function setPlayerCountOptions(min,max){groupSize.innerHTML="";for(let n=min;n<=max;n++){const o=document.createElement("option");o.value=String(n);o.textContent=`${n} player${n===1?"":"s"}`;groupSize.appendChild(o);}selectedPlayers=min;}
+document.querySelectorAll(".package-options button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".package-options button").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedPackage=b.dataset.package;selectedRate=b.dataset.rate;const min=Number(b.dataset.min||b.dataset.players||1),max=Number(b.dataset.max||min);selectedPlayers=Number(b.dataset.players||min);if(max>1){setPlayerCountOptions(min,max);groupSizeWrap.classList.remove("hidden");selectedPlayers=Number(groupSize.value);}else{groupSizeWrap.classList.add("hidden");}updateSummary();});groupSize.onchange=()=>{selectedPlayers=Number(groupSize.value);updateSummary();};clientName.oninput=updateSummary;clientContact.oninput=updateSummary;
 function bookingMessage(){if(!selectedDate||selectedStart===null||selectedEnd===null||!selectedPackage||!clientName.value.trim())return"";const hrs=selectedEnd-selectedStart;const context=[selectedGoalLabel?`Goal: ${selectedGoalLabel}`:"",selectedProgramInterest?`Program Interest: ${selectedProgramInterest.name}`:""].filter(Boolean).join("\n");return `Hi Kyla! I would like to request a pickleball coaching session.
 
 Name: ${clientName.value.trim()}
@@ -46,8 +47,9 @@ Date: ${niceDate(selectedDate)}
 Time: ${hourName(selectedStart)} - ${hourName(selectedEnd)} (${hrs} hour${hrs>1?"s":""})
 Players: ${selectedPlayers}
 Coaching: ${selectedPackage}
-Rate: ${selectedRate}${context?`
+Coaching Rate: ${selectedRate}${context?`
 ${context}`:""}
+Court Fee: Not included (usually ₱100–₱600 depending on venue and time)
 Venue: Santiago City, Isabela
 
 Please confirm if this schedule is still available. Thank you!`;}
