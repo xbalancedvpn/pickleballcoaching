@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=16">
+  <link rel="stylesheet" href="style.css?v=17b">
 
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -22,7 +22,7 @@
     <img class="brand-logo" src="pickyla-emblem-final.png" alt="Pickyla emblem">
   </a>
   <nav id="mainNav" class="main-nav">
-    <a href="#home">Home</a><a href="#about">Coach</a><a href="#rates">Rates</a><button id="weekPreviewNav" class="nav-week-link" type="button">Week Preview</button><a href="#booking">Schedule</a><a href="#contact">Contact</a>
+    <a href="#home">Home</a><a href="#about">Coach</a><a href="#programs">Programs</a><a href="#rates">Rates</a><button id="weekPreviewNav" class="nav-week-link" type="button">Week Preview</button><a href="#booking">Schedule</a><a href="#contact">Contact</a>
   </nav>
   <div class="nav-actions">
     <button id="weekPreviewBtn" class="week-top-btn" type="button" aria-label="Preview this week's schedule" title="Preview this week's schedule">▦ <span>Week</span></button>
@@ -40,8 +40,9 @@
       <span class="eyebrow">PICKLEBALL COACHING • SANTIAGO CITY</span>
       <h1>Build your game.<br><em>One rally at a time.</em></h1>
       <p class="hero-lead">Beginner-friendly coaching with Kyla Nicole Soriano — tournament podium finisher and passionate pickleball player.</p>
-      <div class="quote-card"><span>COURT NOTE</span><blockquote id="heroQuote"></blockquote></div>
-      <div class="hero-actions"><a class="btn primary" href="#booking">View Schedule</a><a class="btn ghost" href="#rates">See Rates</a></div>
+      <div class="quote-card"><span id="heroQuoteLabel">COURT NOTE</span><blockquote id="heroQuote"></blockquote></div>
+      <div id="liveAvailabilityBadge" class="live-availability-badge"><span class="pulse-dot"></span><strong>Checking live availability…</strong></div>
+      <div class="hero-actions"><a class="btn primary" href="#improve">Find My Coaching</a><a class="btn ghost" href="#booking">View Schedule</a></div>
     </div>
   </section>
 
@@ -55,6 +56,27 @@
     </div>
   </section>
 
+  <section class="improve section" id="improve">
+    <div class="section-heading"><span class="eyebrow dark">START WITH YOUR GOAL</span><h2>What do you want to improve?</h2><p>Choose what you want to work on. Pickyla will recommend a coaching path, then you can jump straight to an available schedule.</p></div>
+    <div class="goal-wizard">
+      <div class="goal-options" id="goalOptions">
+        <button type="button" data-focus="beginner" data-label="Beginner Fundamentals"><b>🌱</b><span>I'm completely new</span><small>Rules, grip & fundamentals</small></button>
+        <button type="button" data-focus="serve-return" data-label="Serve & Return"><b>🎯</b><span>Serve & Return</span><small>Start points with confidence</small></button>
+        <button type="button" data-focus="footwork" data-label="Footwork"><b>👟</b><span>Footwork</span><small>Move earlier and recover better</small></button>
+        <button type="button" data-focus="dinking" data-label="Dinking & Kitchen Play"><b>🤝</b><span>Dinking & Kitchen</span><small>Control the non-volley zone</small></button>
+        <button type="button" data-focus="consistency" data-label="Consistency"><b>📈</b><span>Consistency</span><small>Reduce errors and extend rallies</small></button>
+        <button type="button" data-focus="strategy" data-label="Game Strategy"><b>🧠</b><span>Game Strategy</span><small>Positioning and smarter decisions</small></button>
+        <button type="button" data-focus="tournament" data-label="Tournament Preparation"><b>🏆</b><span>Tournament Prep</span><small>Match situations and pressure play</small></button>
+      </div>
+      <div id="goalRecommendation" class="goal-recommendation hidden"></div>
+    </div>
+  </section>
+
+  <section class="programs section" id="programs">
+    <div class="section-heading"><span class="eyebrow">STRUCTURED COACHING</span><h2>Programs with a clear goal.</h2><p>Multi-session packages can follow a planned development path. Each active program shows the overall target and the goal of every session.</p></div>
+    <div id="publicProgramGrid" class="public-program-grid"><div class="public-loading">Loading coaching programs…</div></div>
+  </section>
+
   <section class="rates section" id="rates">
     <div class="section-heading"><span class="eyebrow dark">COACHING RATES</span><h2>Train your way.</h2><p>Standard coaching rates. Special agreed rates may also be arranged directly with Kyla.</p></div>
     <div class="rate-grid">
@@ -62,6 +84,11 @@
       <article class="rate-card"><span class="pill">WITH A PARTNER</span><h3>2 Players</h3><div class="price"><span>₱</span>250</div><p>each / hour</p></article>
       <article class="rate-card"><span class="pill">GROUP</span><h3>3–5 Players</h3><div class="price"><span>₱</span>200</div><p>each / hour</p></article>
     </div>
+  </section>
+
+  <section id="testimonialsSection" class="testimonials section hidden">
+    <div class="section-heading"><span class="eyebrow dark">PLAYER STORIES</span><h2>Progress people can feel.</h2><p>Real feedback shared with permission by Pickyla clients.</p></div>
+    <div id="testimonialGrid" class="testimonial-grid"></div>
   </section>
 
   <section class="booking section" id="booking">
@@ -87,6 +114,7 @@
         <div id="groupSizeWrap" class="group-size hidden"><label>Exact number of players<select id="groupSize"><option value="3">3 players</option><option value="4">4 players</option><option value="5">5 players</option></select></label></div>
       </div>
 
+      <div id="coachingContext" class="coaching-context hidden"></div>
       <div class="request-details">
         <span class="step">STEP 4</span><h3>Your details</h3>
         <div class="request-grid"><label>Name<input id="clientName" type="text" placeholder="Your name"></label><label>Contact (optional)<input id="clientContact" type="text" placeholder="Messenger / mobile"></label></div>
@@ -99,7 +127,7 @@
     </div>
   </section>
 
-  <section class="contact section" id="contact"><span class="eyebrow">CONNECT</span><h2>Ready to play?</h2><p>Questions about your session? Message Kyla on Facebook.</p><a class="btn primary" href="https://www.facebook.com/share/19JD1ACiCu/" target="_blank" rel="noopener">Facebook • Kyla Nicole Soriano / Pickyla</a></section>
+  <section class="contact section" id="contact"><span class="eyebrow">CONNECT</span><h2>Ready to play?</h2><p>Questions about your session? Message Kyla on Facebook or install Pickyla on your phone for quick access.</p><div class="contact-actions"><a class="btn primary" href="https://www.facebook.com/share/19JD1ACiCu/" target="_blank" rel="noopener">Facebook • Kyla Nicole Soriano / Pickyla</a><button id="installPickylaBtn" class="btn install-btn hidden" type="button">Install Pickyla</button></div></section>
 </main>
 <footer><img class="footer-logo" src="pickyla-logo-final.png" alt="Pickyla Pickleball Coaching"><span>Pickleball Coaching • Santiago City, Isabela</span></footer>
 
@@ -117,5 +145,5 @@
 
 <div id="copyToast" class="copy-toast">Booking details copied!</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=16"></script>
+<script src="script.js?v=17b"></script>
 </body></html>

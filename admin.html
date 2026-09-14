@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111"><title>Pickyla Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet"><link rel="stylesheet" href="admin.css?v=17a">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111"><title>Pickyla Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet"><link rel="stylesheet" href="admin.css?v=17b">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -63,6 +63,18 @@
 </section>
 
 
+<section class="v17b-tools-grid">
+  <section class="marketing-tools panel">
+    <div class="panel-head"><div><span class="eyebrow">MARKETING TOOLS</span><h2>Public site QR</h2><p class="panel-note">Download a permanent QR code for posters, court signage and social posts.</p></div><span class="panel-tag">SHARE</span></div>
+    <div class="qr-tool"><div id="publicQrCode" class="qr-code-box"></div><div class="qr-tool-copy"><strong>pickyla-coaching.xbalanced.net</strong><small>Always points to the public coaching site.</small><button id="downloadPublicQr" class="secondary" type="button">Download QR PNG</button></div></div>
+  </section>
+  <section class="testimonial-admin panel">
+    <div class="panel-head"><div><span class="eyebrow">TESTIMONIALS</span><h2>Client stories</h2><p class="panel-note">Only add feedback you have permission to publish. Public visitors see published entries only.</p></div><button id="addTestimonialBtn" class="secondary" type="button">+ Add Testimonial</button></div>
+    <div id="testimonialAdminList" class="testimonial-admin-list"><div class="empty">Loading testimonials…</div></div>
+  </section>
+</section>
+
+
 <section class="v17-grid">
   <section class="client-hub panel">
     <div class="panel-head"><div><span class="eyebrow">CLIENT PROFILES</span><h2>Coaching history</h2><p class="panel-note">Search clients, review sessions, active programs, payments, notes, and progress.</p></div><button id="addClientBtn" class="secondary" type="button">+ Add Client</button></div>
@@ -117,7 +129,7 @@
 
 <dialog id="programDialog"><form class="editor" id="programForm">
   <div class="editor-head"><div><span class="eyebrow">COACHING PROGRAM</span><h2>Create program</h2></div><button type="button" class="close-btn" id="closeProgramDialog">×</button></div>
-  <div class="form-grid"><label class="full">Program name<input id="programName" required maxlength="140" placeholder="e.g. Beginner Development Program"></label><label>Number of sessions<input id="programSessionCount" type="number" min="1" max="50" value="10" required></label><label>Hours / session<input id="programDuration" type="number" min="0.5" max="8" step="0.5" value="1" required></label><label>Fixed package price<input id="programPrice" type="number" min="0" step="1" required></label><label class="full">Description<textarea id="programDescription" rows="2"></textarea></label><label class="full">Overall goal<textarea id="programGoal" rows="3" placeholder="What should the player achieve by the end of this program?"></textarea></label></div>
+  <div class="form-grid"><label class="full">Program name<input id="programName" required maxlength="140" placeholder="e.g. Beginner Development Program"></label><label>Number of sessions<input id="programSessionCount" type="number" min="1" max="50" value="10" required></label><label>Hours / session<input id="programDuration" type="number" min="0.5" max="8" step="0.5" value="1" required></label><label>Fixed package price<input id="programPrice" type="number" min="0" step="1" required></label><label class="full">Description<textarea id="programDescription" rows="2"></textarea></label><label class="full">Overall goal<textarea id="programGoal" rows="3" placeholder="What should the player achieve by the end of this program?"></textarea></label><div class="full program-focus-field"><span>Recommended for</span><small>Select the goals that should recommend this program on the public site.</small><div id="programFocusAreas" class="focus-checks"><label><input type="checkbox" value="beginner"> Beginner</label><label><input type="checkbox" value="serve-return"> Serve & Return</label><label><input type="checkbox" value="footwork"> Footwork</label><label><input type="checkbox" value="dinking"> Dinking & Kitchen</label><label><input type="checkbox" value="consistency"> Consistency</label><label><input type="checkbox" value="strategy"> Strategy</label><label><input type="checkbox" value="tournament"> Tournament Prep</label></div></div></div>
   <div class="program-goals-head"><strong>Session Goals</strong><small>Generated from the number of sessions. You can edit every title and goal.</small></div>
   <div id="programGoalRows" class="program-goal-rows"></div>
   <div class="editor-actions"><button type="button" class="soft-danger" id="cancelProgramDialog">Cancel</button><button type="submit" class="primary">Create Program</button></div>
@@ -151,4 +163,20 @@
   <div class="editor-actions"><button type="button" class="soft-danger" id="cancelProgramPaymentDialog">Cancel</button><button type="submit" class="primary">Save Payment</button></div>
 </form></dialog>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="admin.js?v=17a"></script></body></html>
+
+<dialog id="testimonialDialog"><form class="editor" id="testimonialForm">
+  <div class="editor-head"><div><span class="eyebrow">TESTIMONIAL</span><h2>Add client story</h2></div><button type="button" class="close-btn" id="closeTestimonialDialog">×</button></div>
+  <label>Display name<input id="testimonialName" maxlength="120" required placeholder="e.g. Mae"></label>
+  <label>Player level<input id="testimonialLevel" maxlength="100" placeholder="e.g. Beginner Player"></label>
+  <label>Testimonial<textarea id="testimonialQuote" rows="5" maxlength="800" required placeholder="Use only feedback the client allowed you to publish."></textarea></label>
+  <label class="toggle-label"><input id="testimonialPublished" type="checkbox" checked> Publish on public site</label>
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelTestimonialDialog">Cancel</button><button type="submit" class="primary">Save Testimonial</button></div>
+</form></dialog>
+
+<dialog id="confirmationCardDialog"><div class="editor confirmation-card-dialog">
+  <div class="editor-head"><div><span class="eyebrow">BOOKING CONFIRMATION</span><h2>Shareable client card</h2></div><button type="button" class="close-btn" id="closeConfirmationCard">×</button></div>
+  <img id="confirmationCardPreview" class="confirmation-card-preview" alt="Generated booking confirmation card">
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelConfirmationCard">Close</button><button type="button" class="primary" id="downloadConfirmationCard">Download PNG</button></div>
+</div></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="admin.js?v=17b"></script><script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{}));}</script></body></html>
