@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=17c">
+  <link rel="stylesheet" href="style.css?v=17d">
 
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -116,12 +116,18 @@
       </div>
 
       <div id="coachingContext" class="coaching-context hidden"></div>
-      <div class="request-details">
-        <span class="step">STEP 4</span><h3>Your details</h3>
-        <div class="request-grid"><label>Name<input id="clientName" type="text" placeholder="Your name"></label><label>Contact (optional)<input id="clientContact" type="text" placeholder="Messenger / mobile"></label></div>
+      <div class="request-details participant-details">
+        <span class="step">STEP 4</span><h3>Player details</h3>
+        <p class="participant-intro">Enter every player's <strong>first name and last name</strong>. Contact is optional. Using the same full name each time keeps coaching history and progress records clean.</p>
+        <div id="publicParticipantList" class="public-participant-list"></div>
+        <div class="remember-details-row">
+          <label><input id="rememberPrimaryDetails" type="checkbox"> Remember Player 1 details on this device</label>
+          <button id="forgetRememberedDetails" type="button" class="forget-details hidden">Forget saved details</button>
+        </div>
+        <p class="remember-note">Saved details stay only in this browser/device. Recent player suggestions are also stored only on this device.</p>
       </div>
 
-      <div class="summary"><div><span>BOOKING REQUEST</span><strong id="summaryText">Select a date, time range, coaching type, and enter your name.</strong></div></div>
+      <div class="summary"><div><span>BOOKING REQUEST</span><strong id="summaryText">Select a date, time range, coaching type, and complete all player names.</strong></div></div>
       <div class="booking-actions-client"><button id="sendRequestButton" class="btn request-submit disabled" type="button">Send Request to Admin</button><button id="copyButton" class="btn copy-btn disabled" type="button">Copy Booking Details</button><button id="copyOpenButton" class="btn facebook disabled" type="button">Copy & Open Facebook</button></div>
       <div id="requestSubmitStatus" class="request-submit-status hidden"></div>
       <p class="booking-help">Send Request adds your request to Pickyla Admin for review; it does not reserve the slot until Kyla confirms it. Court fee is separate from the coaching rate and depends on the selected venue/time. You can also copy the details and continue in Messenger.</p>
@@ -146,5 +152,5 @@
 
 <div id="copyToast" class="copy-toast">Booking details copied!</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=17c"></script>
+<script src="script.js?v=17d"></script>
 </body></html>
