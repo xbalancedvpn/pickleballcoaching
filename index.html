@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=17d">
+  <link rel="stylesheet" href="style.css?v=17e">
 
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -87,9 +87,9 @@
     <div class="court-fee-note"><strong>Court fee is not included in the coaching rate.</strong><span>Typical court fees range from ₱100–₱600 depending on the venue, time, peak hours, weekdays, or weekends. The final court fee is confirmed separately.</span></div>
   </section>
 
-  <section id="testimonialsSection" class="testimonials section hidden">
-    <div class="section-heading"><span class="eyebrow dark">PLAYER STORIES</span><h2>Progress people can feel.</h2><p>Real feedback shared with permission by Pickyla clients.</p></div>
-    <div id="testimonialGrid" class="testimonial-grid"></div>
+  <section id="testimonialsSection" class="testimonials section">
+    <div class="section-heading testimonial-heading-row"><div><span class="eyebrow dark">PLAYER STORIES</span><h2>Progress people can feel.</h2><p>Real feedback shared with permission by Pickyla clients. Want to share your experience? Send it for Kyla to review before it appears here.</p></div><button id="writeTestimonialBtn" class="btn testimonial-write-btn" type="button">Write a Testimonial</button></div>
+    <div id="testimonialGrid" class="testimonial-grid"><div class="testimonial-empty">Published player stories will appear here.</div></div>
   </section>
 
   <section class="booking section" id="booking">
@@ -150,7 +150,20 @@
   </div>
 </div>
 
+
+<dialog id="publicTestimonialDialog" class="public-testimonial-dialog">
+  <form id="publicTestimonialForm" class="public-testimonial-form">
+    <div class="public-testimonial-head"><div><span class="eyebrow dark">SHARE YOUR EXPERIENCE</span><h2>Write a Testimonial</h2><p>Your message goes to Pickyla Admin first. Kyla can make minor wording adjustments before approving it for public posting.</p></div><button id="closePublicTestimonial" type="button" aria-label="Close">×</button></div>
+    <div class="public-testimonial-grid"><label>First Name<input id="testimonialFirstName" maxlength="60" autocomplete="given-name" required></label><label>Last Name<input id="testimonialLastName" maxlength="80" autocomplete="family-name" required></label></div>
+    <label>Player Level <span class="optional-label">Optional</span><input id="publicTestimonialLevel" maxlength="100" placeholder="e.g. Beginner Player"></label>
+    <label>Your Testimonial<textarea id="publicTestimonialQuote" rows="6" maxlength="800" required placeholder="Tell us about your coaching experience, improvement, or what you enjoyed about the sessions."></textarea></label>
+    <label class="testimonial-consent"><input id="publicTestimonialConsent" type="checkbox" required> I allow Pickyla to review, make minor wording adjustments, and publish this testimonial on the public site.</label>
+    <div id="publicTestimonialStatus" class="public-testimonial-status hidden"></div>
+    <div class="public-testimonial-actions"><button id="cancelPublicTestimonial" class="btn testimonial-cancel-btn" type="button">Cancel</button><button class="btn testimonial-submit-btn" type="submit">Submit for Review</button></div>
+  </form>
+</dialog>
+
 <div id="copyToast" class="copy-toast">Booking details copied!</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=17d"></script>
+<script src="script.js?v=17e"></script>
 </body></html>
