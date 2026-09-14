@@ -43,3 +43,45 @@ function updateSummary(){if(selectedDate&&selectedStart!==null&&selectedEnd!==nu
 async function copyDetails(){const text=bookingMessage();if(!text)return false;try{await navigator.clipboard.writeText(text);showToast();return true;}catch(e){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();const ok=document.execCommand("copy");document.body.removeChild(ta);if(ok)showToast();return ok;}}
 function showToast(){const t=document.getElementById("copyToast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800);}copyButton.onclick=copyDetails;copyOpenButton.onclick=async()=>{if(!bookingMessage())return;await copyDetails();setTimeout(()=>window.open(FACEBOOK_URL,"_blank"),180);};
 document.getElementById("prevMonth").onclick=()=>{view.setMonth(view.getMonth()-1);selectedDate=null;selectedStart=null;selectedEnd=null;loadMonthSchedule();};document.getElementById("nextMonth").onclick=()=>{view.setMonth(view.getMonth()+1);selectedDate=null;selectedStart=null;selectedEnd=null;loadMonthSchedule();};loadMonthSchedule();
+
+// ===== v16 public direct inquiry + privacy-safe weekly preview =====
+const sendRequestButton=document.getElementById("sendRequestButton"),requestSubmitStatus=document.getElementById("requestSubmitStatus");
+function updateSummary(){
+  const ready=selectedDate&&selectedStart!==null&&selectedEnd!==null&&selectedPackage&&clientName.value.trim();
+  if(ready){const hrs=selectedEnd-selectedStart;summaryText.textContent=`${clientName.value.trim()} • ${niceDate(selectedDate)} • ${hourName(selectedStart)}–${hourName(selectedEnd)} • ${hrs} hr • ${selectedPlayers} player(s) • ${selectedPackage}`;copyButton.classList.remove("disabled");copyOpenButton.classList.remove("disabled");if(sendRequestButton)sendRequestButton.classList.remove("disabled");}
+  else{summaryText.textContent="Select a date, time range, coaching type, and enter your name.";copyButton.classList.add("disabled");copyOpenButton.classList.add("disabled");if(sendRequestButton)sendRequestButton.classList.add("disabled");}
+  if(requestSubmitStatus&&!requestSubmitStatus.dataset.keep){requestSubmitStatus.className="request-submit-status hidden";requestSubmitStatus.textContent="";}
+}
+if(sendRequestButton)sendRequestButton.onclick=async()=>{
+  const text=bookingMessage();if(!text)return;
+  const original=sendRequestButton.textContent;sendRequestButton.disabled=true;sendRequestButton.textContent="Sending…";
+  if(requestSubmitStatus){requestSubmitStatus.dataset.keep="1";requestSubmitStatus.className="request-submit-status hidden";}
+  try{
+    const {data,error}=await db.rpc("submit_public_inquiry",{
+      p_client_name:clientName.value.trim(),p_contact:clientContact.value.trim()||null,p_preferred_date:keyDate(selectedDate),p_start_hour:selectedStart,p_end_hour:selectedEnd,p_participant_count:selectedPlayers,p_coaching_type:selectedPackage,p_quoted_rate:Number(String(selectedRate||"").replace(/[^0-9.]/g,""))||null,p_source_text:text
+    });
+    if(error)throw error;
+    requestSubmitStatus.className="request-submit-status ok";requestSubmitStatus.textContent="Request sent to Pickyla Admin. Your slot is still subject to final confirmation by Kyla.";
+  }catch(e){requestSubmitStatus.className="request-submit-status error";requestSubmitStatus.textContent=e.message||"Could not send your request. Please try Messenger instead.";}
+  finally{sendRequestButton.disabled=false;sendRequestButton.textContent=original;setTimeout(()=>{if(requestSubmitStatus)delete requestSubmitStatus.dataset.keep;},1200);}
+};
+
+const weekPreviewModal=document.getElementById("weekPreviewModal"),publicWeekGrid=document.getElementById("publicWeekGrid"),publicWeekRange=document.getElementById("publicWeekRange");
+function publicSunday(d=new Date()){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-x.getDay());return x;}
+function publicWeekDates(){const s=publicSunday(),out=[];for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);out.push(d);}return out;}
+async function loadPublicWeekPreview(){
+  const days=publicWeekDates(),start=keyDate(days[0]),end=keyDate(days[6]);publicWeekRange.textContent=`${days[0].toLocaleDateString("en-PH",{month:"short",day:"numeric"})} – ${days[6].toLocaleDateString("en-PH",{month:"short",day:"numeric",year:"numeric"})}`;
+  publicWeekGrid.innerHTML='<div class="pw-cell pw-head">TIME</div>'+days.map(d=>`<div class="pw-cell pw-head">${d.toLocaleDateString("en-PH",{weekday:"short"}).toUpperCase()}<small>${d.toLocaleDateString("en-PH",{month:"short",day:"numeric"})}</small></div>`).join("");
+  const {data,error}=await db.from("public_schedule").select("slot_date,start_hour,status").gte("slot_date",start).lte("slot_date",end);
+  if(error){publicWeekGrid.innerHTML=`<div class="pw-cell pw-time" style="grid-column:1/-1">Could not load schedule. Please close and try again.</div>`;return;}
+  const map=new Map((data||[]).map(r=>[`${r.slot_date}|${Number(r.start_hour)}`,r.status])),now=new Date();
+  for(let h=8;h<24;h++){
+    publicWeekGrid.insertAdjacentHTML("beforeend",`<div class="pw-cell pw-time">${hourLabel(h)}</div>`);
+    for(const d of days){const ds=keyDate(d),status=map.get(`${ds}|${h}`)||"available",slot=new Date(d);slot.setHours(h,0,0,0);let cls,label,clickable=false;if(status==="booked"){cls="pw-booked-cell";label="BOOKED";}else if(status==="unavailable"){cls="pw-blocked-cell";label="BLOCKED";}else if(slot<=now){cls="pw-past-cell";label="PAST";}else{cls="pw-available-cell";label="AVAILABLE";clickable=true;}const b=document.createElement(clickable?"button":"div");b.className=`pw-cell ${cls}`;b.textContent=label;if(clickable){b.type="button";b.onclick=()=>jumpFromWeekToBooking(ds,h);}publicWeekGrid.appendChild(b);}
+  }
+}
+async function jumpFromWeekToBooking(ds,h){const [y,m,d]=ds.split("-").map(Number);selectedDate=new Date(y,m-1,d);selectedStart=h;selectedEnd=null;view=new Date(y,m-1,1);weekPreviewModal.classList.add("hidden");await loadMonthSchedule();selectedStart=h;populateEndTimes();clientStart.value=String(h);document.getElementById("booking").scrollIntoView({behavior:"smooth",block:"start"});updateSummary();}
+async function openWeekPreview(){weekPreviewModal.classList.remove("hidden");await loadPublicWeekPreview();}
+[document.getElementById("weekPreviewBtn"),document.getElementById("weekPreviewNav")].filter(Boolean).forEach(b=>b.onclick=async()=>{mainNav.classList.remove("open");menuBtn.setAttribute("aria-expanded","false");await openWeekPreview();});
+if(document.getElementById("closeWeekPreview"))document.getElementById("closeWeekPreview").onclick=()=>weekPreviewModal.classList.add("hidden");
+if(weekPreviewModal)weekPreviewModal.onclick=e=>{if(e.target===weekPreviewModal)weekPreviewModal.classList.add("hidden");};

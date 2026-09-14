@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=13">
+  <link rel="stylesheet" href="style.css?v=16">
 
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -22,9 +22,11 @@
     <img class="brand-logo" src="pickyla-emblem-final.png" alt="Pickyla emblem">
   </a>
   <nav id="mainNav" class="main-nav">
-    <a href="#home">Home</a><a href="#about">Coach</a><a href="#rates">Rates</a><a href="#booking">Schedule</a><a href="#contact">Contact</a>
+    <a href="#home">Home</a><a href="#about">Coach</a><a href="#rates">Rates</a><button id="weekPreviewNav" class="nav-week-link" type="button">Week Preview</button><a href="#booking">Schedule</a><a href="#contact">Contact</a>
   </nav>
   <div class="nav-actions">
+    <button id="weekPreviewBtn" class="week-top-btn" type="button" aria-label="Preview this week's schedule" title="Preview this week's schedule">▦ <span>Week</span></button>
+    <a class="admin-login-btn" href="admin.html" aria-label="Admin login" title="Admin login">🔒 <span>Admin</span></a>
     <a class="small-book" href="#booking">Book</a>
     <button id="menuBtn" class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
@@ -91,15 +93,29 @@
       </div>
 
       <div class="summary"><div><span>BOOKING REQUEST</span><strong id="summaryText">Select a date, time range, coaching type, and enter your name.</strong></div></div>
-      <div class="booking-actions-client"><button id="copyButton" class="btn copy-btn disabled" type="button">Copy Booking Details</button><button id="copyOpenButton" class="btn facebook disabled" type="button">Copy & Open Facebook</button></div>
-      <p class="booking-help">The booking message is copied first. Facebook opens next — paste the message into Messenger and send it to Kyla for final confirmation.</p>
+      <div class="booking-actions-client"><button id="sendRequestButton" class="btn request-submit disabled" type="button">Send Request to Admin</button><button id="copyButton" class="btn copy-btn disabled" type="button">Copy Booking Details</button><button id="copyOpenButton" class="btn facebook disabled" type="button">Copy & Open Facebook</button></div>
+      <div id="requestSubmitStatus" class="request-submit-status hidden"></div>
+      <p class="booking-help">Send Request adds your request to Pickyla Admin for review; it does not reserve the slot until Kyla confirms it. You can also copy the details and continue in Messenger.</p>
     </div>
   </section>
 
   <section class="contact section" id="contact"><span class="eyebrow">CONNECT</span><h2>Ready to play?</h2><p>Questions about your session? Message Kyla on Facebook.</p><a class="btn primary" href="https://www.facebook.com/share/19JD1ACiCu/" target="_blank" rel="noopener">Facebook • Kyla Nicole Soriano / Pickyla</a></section>
 </main>
 <footer><img class="footer-logo" src="pickyla-logo-final.png" alt="Pickyla Pickleball Coaching"><span>Pickleball Coaching • Santiago City, Isabela</span></footer>
+
+<div id="weekPreviewModal" class="week-modal hidden" role="dialog" aria-modal="true" aria-labelledby="weekPreviewTitle">
+  <div class="week-modal-card">
+    <div class="week-modal-head">
+      <div><span class="eyebrow dark">WEEK VIEW</span><h2 id="weekPreviewTitle">This week’s schedule</h2><p id="publicWeekRange">Sunday–Saturday</p></div>
+      <button id="closeWeekPreview" class="week-close" type="button" aria-label="Close week preview">×</button>
+    </div>
+    <div class="public-week-help">Tap a <strong>green available slot</strong> to continue directly to the booking form. Client names are never shown here.</div>
+    <div class="public-week-scroll"><div id="publicWeekGrid" class="public-week-grid"></div></div>
+    <div class="public-week-legend"><span><i class="pw-available"></i>Available</span><span><i class="pw-booked"></i>Booked</span><span><i class="pw-blocked"></i>Blocked</span><span><i class="pw-past"></i>Past</span></div>
+  </div>
+</div>
+
 <div id="copyToast" class="copy-toast">Booking details copied!</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=13"></script>
+<script src="script.js?v=16"></script>
 </body></html>

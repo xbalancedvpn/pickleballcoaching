@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111"><title>Pickyla Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet"><link rel="stylesheet" href="admin.css?v=15">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111"><title>Pickyla Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet"><link rel="stylesheet" href="admin.css?v=16">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -11,9 +11,26 @@
 <section id="adminView" class="hidden"><header class="admin-topbar"><div class="admin-brand brand-stack"><img class="brand-logo admin-logo" src="pickyla-emblem-final.png" alt="Pickyla emblem"><small>Coach Admin</small></div><button id="logoutBtn" class="text-btn">Sign out</button></header><main class="admin-wrap">
 <section class="welcome"><span class="eyebrow">DASHBOARD</span><h1>Schedule, inquiries & earnings</h1><p>Fast booking, paste-to-autofill inquiries, conflict checking, reports, and calendar management.</p></section>
 <section class="report-grid"><article class="report-card"><span>Today</span><strong id="todayGross">₱0</strong><small id="todayMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>This Week</span><strong id="weekGross">₱0</strong><small id="weekMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>This Month</span><strong id="monthGross">₱0</strong><small id="monthMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>All Time</span><strong id="allGross">₱0</strong><small id="allMeta">0 sessions • ₱0 collected</small></article></section>
-<section class="mini-metrics"><div><strong id="monthHours">0</strong><span>Hours this month</span></div><div><strong id="pendingCount">0</strong><span>Pending inquiries</span></div><div><strong id="cancelCount">0</strong><span>Cancelled bookings</span></div></section>
+<section class="mini-metrics"><div><strong id="monthHours">0</strong><span>Hours this month</span></div><div><strong id="pendingCount">0</strong><span>Pending inquiries</span></div><div><strong id="collectionDueCount">0</strong><span>Collection alerts</span></div><div><strong id="cancelCount">0</strong><span>Cancelled bookings</span></div></section>
+<section id="collectionAlertSection" class="collection-alert panel hidden"><div class="panel-head"><div><span class="eyebrow">ACTION NEEDED</span><h2>Sessions finished with collection balance</h2><p class="panel-note">These sessions have already ended but are still unpaid or partially paid.</p></div><span class="panel-tag alert-tag">COLLECTION</span></div><div id="collectionAlertList" class="collection-alert-list"></div></section>
 <section class="chart-grid"><article class="chart-card"><div class="chart-head"><span class="eyebrow">REPORT</span><h2>Last 14 days earnings</h2></div><canvas id="incomeChart"></canvas></article><article class="chart-card"><div class="chart-head"><span class="eyebrow">MIX</span><h2>Bookings by group size</h2></div><canvas id="mixChart"></canvas></article></section>
 
+
+<section class="detailed-report panel">
+  <div class="panel-head"><div><span class="eyebrow">DETAILED REPORT</span><h2>Generate a custom report</h2><p class="panel-note">Use session-date reports for receivables and collection status. Use payment-date reports for actual cash received.</p></div><span class="panel-tag">REPORT</span></div>
+  <div class="report-filter-grid">
+    <label>Report type<select id="detailedReportType"><option value="booking">Bookings & collection status</option><option value="cash">Cash received by payment date</option></select></label>
+    <label>From<input id="reportFrom" type="date"></label><label>To<input id="reportTo" type="date"></label>
+    <label id="reportStatusWrap">Collection status<select id="reportCollectionFilter"><option value="all">All confirmed sessions</option><option value="full">Fully collected</option><option value="partial">Partially collected</option><option value="none">Not collected</option><option value="outstanding">Any outstanding balance</option><option value="cancelled">Cancelled</option></select></label>
+    <button id="generateDetailedReport" class="primary report-generate-btn" type="button">Generate Report</button>
+  </div>
+  <div id="detailedReportResult" class="detailed-report-result hidden">
+    <div id="detailedReportSummary" class="report-summary-grid"></div>
+    <div id="detailedReportNote" class="report-note"></div>
+    <div class="report-table-wrap"><table class="report-table"><thead id="detailedReportHead"></thead><tbody id="detailedReportBody"></tbody></table></div>
+    <div class="report-actions"><button id="downloadReportCsv" class="secondary" type="button">Download CSV</button><button id="printDetailedReport" class="secondary" type="button">Print Report</button></div>
+  </div>
+</section>
 
 <section class="weekly-export panel">
   <div class="weekly-export-head">
@@ -44,4 +61,15 @@
 <section class="day-section"><div class="day-head"><div><span class="eyebrow">DAY VIEW</span><h2>Bookings & hourly schedule</h2></div><label class="date-box">Date<input id="adminDate" type="date"></label></div><div class="status-summary"><div><strong id="availableCount">0</strong><span>Available hours</span></div><div><strong id="bookedCount">0</strong><span>Booked hours</span></div><div><strong id="unavailableCount">0</strong><span>Unavailable hours</span></div></div><div class="subhead"><div><span class="eyebrow">BOOKING GROUPS</span><h3>Cancel or update the whole booking</h3></div></div><section id="bookingGroups" class="booking-groups"></section><div class="subhead hours"><div><span class="eyebrow">HOURLY VIEW</span><h3>Individual time blocks</h3></div></div><section class="slot-list" id="slotList"></section></section>
 </main></section>
 <dialog id="editDialog"><form method="dialog" class="editor" id="editForm"><div class="editor-head"><div><span class="eyebrow">EDIT ONE HOUR</span><h2 id="editSlotTitle"></h2></div><button type="button" id="closeDialog" class="close-btn">×</button></div><input id="editHour" type="hidden"><label>Status<select id="editStatus"><option value="available">Available</option><option value="booked">Booked</option><option value="unavailable">Unavailable</option></select></label><div id="clientFields"><label>Client Name<input id="clientName" type="text"></label><label>Contact<input id="contact" type="text"></label><label>Coaching Type<input id="coachingType" type="text"></label><label>Rate<input id="rate" type="number" min="0" step="1"></label><label>Notes<textarea id="notes" rows="3"></textarea></label></div><div class="editor-actions"><button type="button" id="deleteBtn" class="danger">Reset to Available</button><button type="submit" class="primary">Save Changes</button></div></form></dialog>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="admin.js?v=15.1"></script></body></html>
+
+<dialog id="paymentDialog"><form class="editor" id="paymentForm">
+  <div class="editor-head"><div><span class="eyebrow">PAYMENT LEDGER</span><h2>Record payment</h2><p id="paymentBookingInfo" class="panel-note"></p></div><button type="button" id="closePaymentDialog" class="close-btn">×</button></div>
+  <input id="paymentBookingId" type="hidden">
+  <label>Amount received<input id="paymentAmount" type="number" min="0.01" step="0.01" required></label>
+  <label>Payment date<input id="paymentDate" type="date" required></label>
+  <label>Method<select id="paymentMethod"><option value="Cash">Cash</option><option value="GCash">GCash</option><option value="Bank Transfer">Bank Transfer</option><option value="Other">Other</option></select></label>
+  <label>Note<textarea id="paymentNote" rows="2" placeholder="Optional reference / note"></textarea></label>
+  <div class="editor-actions"><button type="button" id="cancelPaymentDialog" class="soft-danger">Cancel</button><button type="submit" class="primary">Save Payment</button></div>
+</form></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="admin.js?v=16"></script></body></html>
