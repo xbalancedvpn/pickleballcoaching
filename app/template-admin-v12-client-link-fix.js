@@ -1,38 +1,20 @@
 (() => {
-  const cfg = window.COACH_APP_CONFIG || {};
-  const rates = cfg.rates || {};
-  const defs = [rates.solo, rates.partners, rates.group].filter(Boolean);
-
-  const originalQuickBookingSubmit = $("quickBookingForm")?.onsubmit || null;
-  const originalParseButtonClick = $("parseBtn")?.onclick || null;
-  const originalParseClientText = typeof parseClientText === "function" ? parseClientText : null;
-
-  function configuredRate(players) {
-    const n = Number(players || 1);
-    const match = defs.find(r => n >= Number(r.minPlayers) && n <= Number(r.maxPlayers));
-    return Number(match?.amount || 0);
-  }
-
-  function configuredType(players) {
-    const n = Number(players || 1);
-    const match = defs.find(r => n >= Number(r.minPlayers) && n <= Number(r.maxPlayers));
-    if (!match) return "Pickleball Coaching";
-    if (Number(match.minPlayers) === 1 && Number(match.maxPlayers) === 1) return match.label || "1-on-1";
-    const range = Number(match.minPlayers) === Number(match.maxPlayers)
-      ? String(match.minPlayers)
-      : `${match.minPlayers}–${match.maxPlayers}`;
-    return `${match.label || "Group"} (${range} Players)`;
-  }
+  // Capture the full v17 handlers before the template business patch replaces them.
+  const v17QuickBookingSubmit = $("quickBookingForm")?.onsubmit || null;
+  const v17ParseButtonClick = $("parseBtn")?.onclick || null;
+  const v17ParseClientText = typeof parseClientText === "function" ? parseClientText : null;
 
   function restoreV17BookingFlow() {
     try {
-      if (typeof standardRate === "function") standardRate = configuredRate;
-      if (typeof coachingType === "function") coachingType = configuredType;
+      // Restore the mature v17 workflow. This is the flow that creates/links
+      // client profiles, writes booking_participants, and marks loaded inquiries
+      // confirmed after a booking is successfully created.
+      if (v17ParseClientText) parseClientText = v17ParseClientText;
+      if (v17ParseButtonClick && $("parseBtn")) $("parseBtn").onclick = v17ParseButtonClick;
+      if (v17QuickBookingSubmit && $("quickBookingForm")) $("quickBookingForm").onsubmit = v17QuickBookingSubmit;
 
-      if (originalParseClientText) parseClientText = originalParseClientText;
-      if (originalParseButtonClick && $("parseBtn")) $("parseBtn").onclick = originalParseButtonClick;
-      if (originalQuickBookingSubmit && $("quickBookingForm")) $("quickBookingForm").onsubmit = originalQuickBookingSubmit;
-
+      // Keep the v17 participant roster behavior while allowing the template
+      // updateRate() patch to continue supplying config-driven rates.
       if ($("participantCount")) {
         $("participantCount").onchange = () => {
           const n = Number($("participantCount").value || 1);
@@ -43,9 +25,11 @@
 
       if (typeof updateRate === "function") updateRate();
     } catch (error) {
-      console.warn("Master Template v1.2.1 client-link compatibility fix could not fully apply:", error);
+      console.warn("Master Template v1.2 client-link compatibility fix could not fully apply:", error);
     }
   }
 
-  window.addEventListener("load", () => setTimeout(restoreV17BookingFlow, 60));
+  // template-admin-patches runs at load+0ms and template-admin-business at +20ms.
+  // Restore the richer v17 handlers after both have finished applying.
+  window.addEventListener("load", () => setTimeout(restoreV17BookingFlow, 80));
 })();
