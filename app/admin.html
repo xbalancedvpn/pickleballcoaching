@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111"><title>Pickyla Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet"><link rel="stylesheet" href="admin.css?v=17e">
+  <link rel="stylesheet" href="admin-v17f.css?v=17f">
+  <link rel="stylesheet" href="admin-v17g.css?v=17g">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+</head><body>
+<div id="toast" class="toast"></div>
+<section id="loginView" class="auth-page"><div class="auth-card"><div class="admin-brand"><img class="brand-logo auth-logo" src="pickyla-wordmark-final.png" alt="Pickyla"></div><span class="eyebrow">COACH ADMIN</span><h1>Manage coaching in seconds.</h1><p>Sign in with your Supabase admin account.</p><form id="loginForm"><label>Email<input id="email" type="email" required></label><label>Password<input id="password" type="password" required></label><button class="primary" type="submit">Sign In</button></form><small id="loginError"></small><a class="auth-public-link" href="index.html">← Back to Public Site</a></div></section>
+<section id="adminView" class="hidden"><header class="admin-topbar"><div class="admin-brand brand-stack"><img class="brand-logo admin-logo" src="pickyla-emblem-final.png" alt="Pickyla emblem"><small>Coach Admin</small></div><div class="admin-top-actions"><a class="top-public-link" href="index.html" title="Open public site">↗ <span>Public Site</span></a><button id="adminNotificationBtn" class="v17f-notification-btn" type="button" title="Pending admin actions" aria-label="Open pending admin actions">🔔 <span id="adminNotificationCount">0</span></button><button id="adminMenuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="adminMenuDrawer">☰ <span>Menu</span></button><button id="logoutBtn" class="text-btn">Sign out</button></div></header>
+<div id="adminMenuBackdrop" class="admin-menu-backdrop hidden"></div>
+<aside id="adminMenuDrawer" class="admin-menu-drawer" aria-hidden="true"><div class="admin-menu-head"><div><span class="eyebrow">QUICK NAVIGATION</span><h2>Admin Menu</h2></div><button id="adminMenuClose" type="button" aria-label="Close menu">×</button></div><nav class="admin-menu-links"><a href="#adminDashboardTop">Dashboard</a><a href="#todayCommandSection">Today</a><a href="#paymentDashboardSection">Payments</a><a href="#adminReportsSection">Reports</a><a href="#weeklyShareSection">Weekly Schedule</a><a href="#shareToolsSection">Marketing & Testimonials</a><a href="#clientHubSection">Client Profiles</a><a href="#programHubSection">Programs</a><a href="#bookingToolsSection">Booking Tools</a><a href="#inquirySection">Inquiries</a><a href="#calendarSection">Calendar</a><a href="#daySection">Day View</a></nav><a class="admin-menu-public" href="index.html">Open Public Site ↗</a></aside><main class="admin-wrap">
+<section class="welcome" id="adminDashboardTop"><span class="eyebrow">DASHBOARD</span><h1>Coach operations, clients & progress</h1><p>Run today’s sessions, track clients and programs, monitor progress, manage collections, and keep the schedule moving.</p></section>
+<section class="report-grid"><article class="report-card"><span>Today</span><strong id="todayGross">₱0</strong><small id="todayMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>This Week</span><strong id="weekGross">₱0</strong><small id="weekMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>This Month</span><strong id="monthGross">₱0</strong><small id="monthMeta">0 sessions • ₱0 collected</small></article><article class="report-card"><span>All Time</span><strong id="allGross">₱0</strong><small id="allMeta">0 sessions • ₱0 collected</small></article></section>
+<section class="mini-metrics"><div><strong id="monthHours">0</strong><span>Hours this month</span></div><div><strong id="pendingCount">0</strong><span>Pending inquiries</span></div><div><strong id="collectionDueCount">0</strong><span>Collection alerts</span></div><div><strong id="cancelCount">0</strong><span>Cancelled bookings</span></div></section>
+
+<section class="today-command panel" id="todayCommandSection">
+  <div class="panel-head"><div><span class="eyebrow">TODAY COMMAND CENTER</span><h2 id="todayCommandTitle">Today</h2><p class="panel-note">Close finished sessions, spot outstanding payments, and see what is coming next.</p></div><span class="panel-tag">LIVE</span></div>
+  <div id="todayCommandStats" class="today-command-stats"></div>
+  <div id="todaySessionList" class="today-session-list"><div class="empty">Loading today’s sessions…</div></div>
+</section>
+
+<section class="payment-dashboard panel" id="paymentDashboardSection">
+  <div class="panel-head"><div><span class="eyebrow">PAYMENT DASHBOARD</span><h2>Collections at a glance</h2><p class="panel-note">Booking payments and program-package payments are tracked separately, then combined here.</p></div><span class="panel-tag">MONEY</span></div>
+  <div id="paymentDashboardCards" class="payment-dashboard-cards"></div>
+  <div id="paymentMethodBreakdown" class="payment-method-breakdown"></div>
+</section>
+<section id="collectionAlertSection" class="collection-alert panel hidden"><div class="panel-head"><div><span class="eyebrow">ACTION NEEDED</span><h2>Sessions finished with collection balance</h2><p class="panel-note">These sessions have already ended but are still unpaid or partially paid.</p></div><span class="panel-tag alert-tag">COLLECTION</span></div><div id="collectionAlertList" class="collection-alert-list"></div></section>
+<section class="chart-grid"><article class="chart-card"><div class="chart-head"><span class="eyebrow">REPORT</span><h2>Last 14 days earnings</h2></div><canvas id="incomeChart"></canvas></article><article class="chart-card"><div class="chart-head"><span class="eyebrow">MIX</span><h2>Bookings by group size</h2></div><canvas id="mixChart"></canvas></article></section>
+
+
+<section class="detailed-report panel" id="adminReportsSection">
+  <div class="panel-head"><div><span class="eyebrow">DETAILED REPORT</span><h2>Generate a custom report</h2><p class="panel-note">Use session-date reports for receivables and collection status. Use payment-date reports for actual cash received.</p></div><span class="panel-tag">REPORT</span></div>
+  <div class="report-filter-grid">
+    <label>Report type<select id="detailedReportType"><option value="booking">Bookings & collection status</option><option value="cash">Cash received by payment date</option></select></label>
+    <label>From<input id="reportFrom" type="date"></label><label>To<input id="reportTo" type="date"></label>
+    <label id="reportStatusWrap">Collection status<select id="reportCollectionFilter"><option value="all">All confirmed sessions</option><option value="full">Fully collected</option><option value="partial">Partially collected</option><option value="none">Not collected</option><option value="outstanding">Any outstanding balance</option><option value="cancelled">Cancelled</option></select></label>
+    <button id="generateDetailedReport" class="primary report-generate-btn" type="button">Generate Report</button>
+  </div>
+  <div id="detailedReportResult" class="detailed-report-result hidden">
+    <div id="detailedReportSummary" class="report-summary-grid"></div>
+    <div id="detailedReportNote" class="report-note"></div>
+    <div class="report-table-wrap"><table class="report-table"><thead id="detailedReportHead"></thead><tbody id="detailedReportBody"></tbody></table></div>
+    <div class="report-actions"><button id="downloadReportCsv" class="secondary" type="button">Download CSV</button><button id="printDetailedReport" class="secondary" type="button">Print Report</button></div>
+  </div>
+</section>
+
+<section class="weekly-export panel" id="weeklyShareSection">
+  <div class="weekly-export-head">
+    <div class="weekly-export-title">
+      <img src="pickyla-emblem-final.png" alt="Pickyla emblem">
+      <div><span class="eyebrow">WEEKLY SHARE CARD</span><h2>Generate schedule image</h2><p>Create a Sunday–Saturday PNG from the live schedule, ready to send in Messenger.</p></div>
+    </div>
+    <div class="weekly-export-controls">
+      <label>Week containing<input id="weeklyWeekDate" type="date"></label>
+      <button id="generateWeeklyBtn" class="primary" type="button">Generate Weekly Image</button>
+    </div>
+  </div>
+  <div class="weekly-export-meta"><strong id="weeklyRangeLabel">Current week</strong><span>Green = Available • Red = Booked • Gray = Blocked • Light gray = Past</span></div>
+  <div id="weeklyPreviewWrap" class="weekly-preview-wrap hidden">
+    <img id="weeklyPreview" alt="Generated Pickyla weekly schedule preview">
+    <div class="weekly-preview-actions"><button id="downloadWeeklyBtn" class="secondary" type="button">Download PNG</button></div>
+  </div>
+</section>
+
+
+<section class="v17b-tools-grid" id="shareToolsSection">
+  <section class="marketing-tools panel">
+    <div class="panel-head"><div><span class="eyebrow">MARKETING TOOLS</span><h2>Public site QR</h2><p class="panel-note">Download a permanent QR code for posters, court signage and social posts.</p></div><span class="panel-tag">SHARE</span></div>
+    <div class="qr-tool"><div id="publicQrCode" class="qr-code-box"></div><div class="qr-tool-copy"><strong>pickyla-coaching.xbalanced.net</strong><small>Always points to the public coaching site.</small><button id="downloadPublicQr" class="secondary" type="button">Download QR PNG</button></div></div>
+  </section>
+  <section class="testimonial-admin panel">
+    <div class="panel-head"><div><span class="eyebrow">TESTIMONIALS</span><h2>Client stories</h2><p class="panel-note">Public submissions arrive here as Pending. Review or edit them first, then approve and publish when ready.</p></div><button id="addTestimonialBtn" class="secondary" type="button">+ Add Testimonial</button></div>
+    <div id="testimonialAdminList" class="testimonial-admin-list"><div class="empty">Loading testimonials…</div></div>
+  </section>
+</section>
+
+
+<section class="v17-grid">
+  <section class="client-hub panel" id="clientHubSection">
+    <div class="panel-head"><div><span class="eyebrow">CLIENT PROFILES</span><h2>Coaching history</h2><p class="panel-note">Search clients, review sessions, active programs, payments, notes, and progress.</p></div><button id="addClientBtn" class="secondary" type="button">+ Add Client</button></div>
+    <div class="client-search-row"><input id="clientSearch" type="search" placeholder="Search first name, last name, or contact"><span id="clientCountLabel">0 clients</span></div>
+    <div id="clientList" class="client-list"><div class="empty">Loading clients…</div></div>
+  </section>
+  <section class="program-hub panel" id="programHubSection">
+    <div class="panel-head"><div><span class="eyebrow">COACHING PROGRAMS</span><h2>Packages & session goals</h2><p class="panel-note">Build fixed-price programs such as a structured 10-session development plan.</p></div><button id="addProgramBtn" class="secondary" type="button">+ New Program</button></div>
+    <div id="programList" class="program-list"><div class="empty">Loading programs…</div></div>
+  </section>
+</section>
+
+<section id="clientDetailSection" class="client-detail panel hidden">
+  <div class="panel-head"><div><span class="eyebrow">CLIENT PROFILE</span><h2 id="clientDetailName">Client</h2><p id="clientDetailMeta" class="panel-note"></p></div><div class="client-detail-actions"><button id="generateProgressCardBtn" class="secondary" type="button">Progress Card</button><button id="addAssessmentBtn" class="secondary" type="button">+ Progress Assessment</button><button id="enrollProgramBtn" class="primary" type="button">Enroll in Program</button></div></div>
+  <div id="clientDetailStats" class="client-detail-stats"></div>
+  <div class="client-detail-grid">
+    <div><div class="subhead"><div><span class="eyebrow">SESSION HISTORY</span><h3>Bookings & outcomes</h3></div></div><div id="clientSessionHistory" class="client-session-history"></div></div>
+    <div><div class="subhead"><div><span class="eyebrow">PROGRAMS</span><h3>Enrollment progress</h3></div></div><div id="clientProgramHistory" class="client-program-history"></div><div class="subhead"><div><span class="eyebrow">PLAYER PROGRESS</span><h3>Latest assessment</h3></div></div><div id="clientProgressSummary" class="client-progress-summary"></div></div>
+  </div>
+  <div class="v17f-client-extra-grid">
+    <section class="v17f-client-extra"><div class="subhead"><div><span class="eyebrow">PROGRAM JOURNEY</span><h3>Session goals & status</h3></div></div><div id="v17fProgramJourney" class="v17f-program-journey"><div class="empty">Open a client profile to view the program journey.</div></div></section>
+    <section class="v17f-client-extra"><div class="subhead"><div><span class="eyebrow">PROGRESS TIMELINE</span><h3>Assessment history</h3></div></div><div id="v17fProgressHistory" class="v17f-progress-history"><div class="empty">Open a client profile to view assessment history.</div></div></section>
+  </div>
+</section>
+
+<section class="parser-panel panel" id="bookingToolsSection"><div class="panel-head"><div><span class="eyebrow">PASTE FROM CLIENT</span><h2>Auto-fill a booking request</h2></div><span class="panel-tag">SMART PASTE</span></div><p class="panel-note">Paste the exact message copied from the client page. Pickyla will read the name, date, time, players and rate, then check for schedule conflicts before you confirm.</p><textarea id="pasteInquiry" rows="9" placeholder="Paste the client's booking request here..."></textarea><div id="parseResult" class="parse-result neutral">Waiting for a client message.</div><div class="parser-actions"><button id="parseBtn" class="secondary" type="button">Parse & Check</button><button id="savePendingBtn" class="soft" type="button" disabled>Save as Pending Inquiry</button></div></section>
+
+<section class="quick-grid"><form id="quickBookingForm" class="panel"><div class="panel-head"><div><span class="eyebrow">NEW BOOKING</span><h2>Book a time range</h2></div><span class="panel-tag">FINALIZE</span></div><div class="form-grid"><label class="full">Date<input id="bookingDate" type="date" required></label><label>Start time<select id="bookingStart" required></select></label><label>End time<select id="bookingEnd" required></select></label><input id="bookingClient" type="hidden"><input id="bookingContact" type="hidden"><label>Players<select id="participantCount"><option value="1">1 player</option><option value="2">2 players</option><option value="3">3 players</option><option value="4">4 players</option><option value="5">5 players</option><option value="6">6 players</option><option value="7">7 players</option><option value="8">8 players</option></select></label><div class="full admin-participants-box"><div class="admin-participants-head"><div><strong>Players in this booking</strong><small>First and last name required • contact optional</small></div><span id="adminParticipantCountLabel">1 player</span></div><div id="adminParticipantList" class="admin-participant-list"></div></div><label>Rate<select id="rateMode"><option value="standard">Standard rate</option><option value="custom">Custom / regular client rate</option></select></label><label>Rate / person / hour<input id="ratePerPerson" type="number" min="0" step="1" required></label><div class="full admin-rate-note">Standard: 1-on-1 ₱400/hr • 2–3 players ₱300 each/hr • 4–8 players ₱250 each/hr. Court fee is separate and is not included in this booking total.</div><label>Amount received<input id="amountPaid" type="number" min="0" step="1" value="0"></label><label class="full">Notes<textarea id="bookingNotes" rows="2" placeholder="Optional"></textarea></label></div><div class="booking-total"><span>Booking total</span><strong id="bookingTotal">₱400</strong><small id="bookingCalc"></small></div><div id="bookingHint" class="hint">Choose a date to load available times.</div><button class="primary wide" type="submit">Review & Confirm Booking</button></form>
+<form id="blockForm" class="panel"><div class="panel-head"><div><span class="eyebrow">QUICK BLOCK</span><h2>Tournament / unavailable</h2></div><span class="panel-tag muted">BULK</span></div><div class="form-grid"><label>From date<input id="blockFromDate" type="date" required></label><label>To date<input id="blockToDate" type="date" required></label><label>Start time<select id="blockStart" required></select></label><label>End time<select id="blockEnd" required></select></label></div><div class="quick-presets"><button type="button" data-preset="whole">Whole day</button><button type="button" data-preset="morning">8 AM–12 PM</button><button type="button" data-preset="afternoon">12–5 PM</button><button type="button" data-preset="evening">5 PM–12 MN</button></div><p class="panel-note">Existing confirmed bookings are protected.</p><div class="bulk-actions"><button class="secondary" type="submit">Mark Unavailable</button><button class="soft-danger" type="button" id="clearUnavailableBtn">Clear Unavailable</button></div></form></section>
+
+<section class="inquiry-section" id="inquirySection"><div class="section-row"><div><span class="eyebrow">INQUIRY TRACKER</span><h2>Pending conversations</h2></div><select id="inquiryFilter"><option value="active">Active</option><option value="new">New</option><option value="waiting">Waiting</option><option value="tentative">Tentative</option><option value="confirmed">Confirmed</option><option value="cancelled">Cancelled</option><option value="all">All</option></select></div><div id="inquiryList" class="inquiry-list"></div></section>
+
+<section class="admin-calendar-section" id="calendarSection"><div class="admin-calendar-head"><div><span class="eyebrow">MONTH VIEW</span><h2>Calendar overview</h2><p>Tap a date to open its bookings and hourly schedule below.</p></div><div class="month-nav"><button type="button" id="adminPrevMonth">‹</button><strong id="adminMonthLabel"></strong><button type="button" id="adminNextMonth">›</button></div></div><div class="admin-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div id="adminCalendar" class="admin-calendar"></div><div class="admin-calendar-legend"><span><i class="lg-open"></i>Open</span><span><i class="lg-partial"></i>Has booking</span><span><i class="lg-full"></i>Fully booked</span><span><i class="lg-blocked"></i>Unavailable / limited</span></div></section>
+<section class="day-section" id="daySection"><div class="day-head"><div><span class="eyebrow">DAY VIEW</span><h2>Bookings & hourly schedule</h2></div><label class="date-box">Date<input id="adminDate" type="date"></label></div><div class="status-summary"><div><strong id="availableCount">0</strong><span>Available hours</span></div><div><strong id="bookedCount">0</strong><span>Booked hours</span></div><div><strong id="unavailableCount">0</strong><span>Unavailable hours</span></div></div><div class="subhead"><div><span class="eyebrow">BOOKING GROUPS</span><h3>Cancel or update the whole booking</h3><p class="panel-note">Participant names are linked to individual client profiles for clean search and coaching history.</p></div></div><section id="bookingGroups" class="booking-groups"></section><div class="subhead hours"><div><span class="eyebrow">HOURLY VIEW</span><h3>Individual time blocks</h3></div></div><section class="slot-list" id="slotList"></section></section>
+</main></section>
+<dialog id="editDialog"><form method="dialog" class="editor" id="editForm"><div class="editor-head"><div><span class="eyebrow">EDIT ONE HOUR</span><h2 id="editSlotTitle"></h2></div><button type="button" id="closeDialog" class="close-btn">×</button></div><input id="editHour" type="hidden"><label>Status<select id="editStatus"><option value="available">Available</option><option value="booked">Booked</option><option value="unavailable">Unavailable</option></select></label><div id="clientFields"><label>Client Name<input id="clientName" type="text"></label><label>Contact<input id="contact" type="text"></label><label>Coaching Type<input id="coachingType" type="text"></label><label>Rate<input id="rate" type="number" min="0" step="1"></label><label>Notes<textarea id="notes" rows="3"></textarea></label></div><div class="editor-actions"><button type="button" id="deleteBtn" class="danger">Reset to Available</button><button type="submit" class="primary">Save Changes</button></div></form></dialog>
+
+<dialog id="paymentDialog"><form class="editor" id="paymentForm">
+  <div class="editor-head"><div><span class="eyebrow">PAYMENT LEDGER</span><h2>Record payment</h2><p id="paymentBookingInfo" class="panel-note"></p></div><button type="button" id="closePaymentDialog" class="close-btn">×</button></div>
+  <input id="paymentBookingId" type="hidden">
+  <label>Amount received<input id="paymentAmount" type="number" min="0.01" step="0.01" required></label>
+  <label>Payment date<input id="paymentDate" type="date" required></label>
+  <label>Method<select id="paymentMethod"><option value="Cash">Cash</option><option value="GCash">GCash</option><option value="Bank Transfer">Bank Transfer</option><option value="Other">Other</option></select></label>
+  <label>Note<textarea id="paymentNote" rows="2" placeholder="Optional reference / note"></textarea></label>
+  <div class="editor-actions"><button type="button" id="cancelPaymentDialog" class="soft-danger">Cancel</button><button type="submit" class="primary">Save Payment</button></div>
+</form></dialog>
+
+
+<dialog id="clientDialog"><form class="editor" id="clientForm">
+  <div class="editor-head"><div><span class="eyebrow">CLIENT PROFILE</span><h2>Add client</h2></div><button type="button" class="close-btn" id="closeClientDialog">×</button></div>
+  <div class="form-grid"><label>First name<input id="newClientFirstName" required maxlength="60"></label><label>Last name<input id="newClientLastName" required maxlength="80"></label></div>
+  <label>Contact / Messenger<input id="newClientContact" maxlength="120" placeholder="Recommended for reliable client matching"></label>
+  <label>Coach notes<textarea id="newClientNotes" rows="3" placeholder="Optional"></textarea></label>
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelClientDialog">Cancel</button><button type="submit" class="primary">Save Client</button></div>
+</form></dialog>
+
+<dialog id="programDialog"><form class="editor" id="programForm">
+  <div class="editor-head"><div><span class="eyebrow">COACHING PROGRAM</span><h2>Create program</h2></div><button type="button" class="close-btn" id="closeProgramDialog">×</button></div>
+  <div class="form-grid"><label class="full">Program name<input id="programName" required maxlength="140" placeholder="e.g. Beginner Development Program"></label><label>Number of sessions<input id="programSessionCount" type="number" min="1" max="50" value="10" required></label><label>Hours / session<input id="programDuration" type="number" min="0.5" max="8" step="0.5" value="1" required></label><label>Fixed package price<input id="programPrice" type="number" min="0" step="1" required></label><label class="full">Description<textarea id="programDescription" rows="2"></textarea></label><label class="full">Overall goal<textarea id="programGoal" rows="3" placeholder="What should the player achieve by the end of this program?"></textarea></label><div class="full program-focus-field"><span>Recommended for</span><small>Select the goals that should recommend this program on the public site.</small><div id="programFocusAreas" class="focus-checks"><label><input type="checkbox" value="beginner"> Beginner</label><label><input type="checkbox" value="serve-return"> Serve & Return</label><label><input type="checkbox" value="footwork"> Footwork</label><label><input type="checkbox" value="dinking"> Dinking & Kitchen</label><label><input type="checkbox" value="consistency"> Consistency</label><label><input type="checkbox" value="strategy"> Strategy</label><label><input type="checkbox" value="tournament"> Tournament Prep</label></div></div></div>
+  <div class="program-goals-head"><strong>Session Goals</strong><small>Generated from the number of sessions. You can edit every title and goal.</small></div>
+  <div id="programGoalRows" class="program-goal-rows"></div>
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelProgramDialog">Cancel</button><button type="submit" class="primary">Create Program</button></div>
+</form></dialog>
+
+<dialog id="enrollDialog"><form class="editor" id="enrollForm">
+  <div class="editor-head"><div><span class="eyebrow">PROGRAM ENROLLMENT</span><h2 id="enrollClientLabel">Enroll client</h2></div><button type="button" class="close-btn" id="closeEnrollDialog">×</button></div>
+  <label>Program<select id="enrollProgramSelect" required></select></label>
+  <label>Package price<input id="enrollPrice" type="number" min="0" step="1" required></label>
+  <label>Enrollment date<input id="enrollDate" type="date" required></label>
+  <label>Notes<textarea id="enrollNotes" rows="2"></textarea></label>
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelEnrollDialog">Cancel</button><button type="submit" class="primary">Enroll Client</button></div>
+</form></dialog>
+
+<dialog id="assessmentDialog"><form class="editor" id="assessmentForm">
+  <div class="editor-head"><div><span class="eyebrow">PLAYER PROGRESS</span><h2 id="assessmentClientLabel">Progress assessment</h2></div><button type="button" class="close-btn" id="closeAssessmentDialog">×</button></div>
+  <div class="form-grid"><label>Assessment date<input id="assessmentDate" type="date" required></label><label>Type<select id="assessmentType"><option value="initial">Initial</option><option value="session" selected>Session</option><option value="mid">Mid-program</option><option value="final">Final</option></select></label></div>
+  <div class="assessment-grid">
+    <label>Serve<select id="scoreServe"></select></label><label>Return<select id="scoreReturn"></select></label><label>Forehand<select id="scoreForehand"></select></label><label>Backhand<select id="scoreBackhand"></select></label><label>Dinking<select id="scoreDinking"></select></label><label>Footwork<select id="scoreFootwork"></select></label><label>Positioning<select id="scorePositioning"></select></label><label>Consistency<select id="scoreConsistency"></select></label><label>Strategy<select id="scoreStrategy"></select></label><label>Confidence<select id="scoreConfidence"></select></label>
+  </div>
+  <label>Coach note<textarea id="assessmentNote" rows="3" placeholder="What improved? What should be the next focus?"></textarea></label>
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelAssessmentDialog">Cancel</button><button type="submit" class="primary">Save Assessment</button></div>
+</form></dialog>
+
+<dialog id="programPaymentDialog"><form class="editor" id="programPaymentForm">
+  <div class="editor-head"><div><span class="eyebrow">PROGRAM PAYMENT</span><h2>Record package payment</h2><p id="programPaymentInfo" class="panel-note"></p></div><button type="button" class="close-btn" id="closeProgramPaymentDialog">×</button></div>
+  <label>Amount<input id="programPaymentAmount" type="number" min="0.01" step="0.01" required></label>
+  <label>Payment date<input id="programPaymentDate" type="date" required></label>
+  <label>Method<select id="programPaymentMethod"><option>Cash</option><option>GCash</option><option>Bank Transfer</option><option>Other</option></select></label>
+  <label>Note<textarea id="programPaymentNote" rows="2"></textarea></label>
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelProgramPaymentDialog">Cancel</button><button type="submit" class="primary">Save Payment</button></div>
+</form></dialog>
+
+
+<dialog id="testimonialDialog"><form class="editor" id="testimonialForm">
+  <div class="editor-head"><div><span class="eyebrow">TESTIMONIAL REVIEW</span><h2 id="testimonialDialogTitle">Add client story</h2><p id="testimonialDialogMeta" class="panel-note"></p></div><button type="button" class="close-btn" id="closeTestimonialDialog">×</button></div>
+  <label>Display name<input id="testimonialName" maxlength="120" required placeholder="e.g. Mae"></label>
+  <label>Player level<input id="testimonialLevel" maxlength="100" placeholder="e.g. Beginner Player"></label>
+  <label>Testimonial<textarea id="testimonialQuote" rows="5" maxlength="800" required placeholder="Review wording before publishing."></textarea></label>
+  <label>Review status<select id="testimonialReviewStatus"><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></label>
+  <label class="toggle-label"><input id="testimonialPublished" type="checkbox"> Publish on public site</label>
+  <p class="testimonial-review-note">Publishing automatically marks the testimonial as Approved. Rejected testimonials stay private.</p>
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelTestimonialDialog">Cancel</button><button type="submit" class="primary" id="testimonialSaveBtn">Save Changes</button></div>
+</form></dialog>
+
+<dialog id="confirmationCardDialog"><div class="editor confirmation-card-dialog">
+  <div class="editor-head"><div><span class="eyebrow">BOOKING CONFIRMATION</span><h2>Shareable client card</h2></div><button type="button" class="close-btn" id="closeConfirmationCard">×</button></div>
+  <img id="confirmationCardPreview" class="confirmation-card-preview" alt="Generated booking confirmation card">
+  <div class="editor-actions"><button type="button" class="soft-danger" id="cancelConfirmationCard">Close</button><button type="button" class="primary" id="downloadConfirmationCard">Download PNG</button></div>
+</div></dialog>
+
+<dialog id="adminReminderDialog" class="v17f-reminder-dialog"><div class="editor v17f-reminder-card">
+  <div class="editor-head"><div><span class="eyebrow">ADMIN REMINDER</span><h2>Things that need attention</h2><p class="panel-note">Pending requests, approvals, session closing, and collections in one place.</p></div><button type="button" class="close-btn" id="closeAdminReminder">×</button></div>
+  <div id="adminReminderSummary" class="v17f-reminder-summary"><div class="empty">Checking pending actions…</div></div>
+  <label class="v17f-reminder-pref"><input id="adminReminderEveryVisit" type="checkbox" checked> Show this reminder automatically every time I visit Admin when there are pending actions.</label>
+  <div class="editor-actions"><button id="refreshAdminReminder" type="button" class="secondary">Refresh</button><button id="dismissAdminReminder" type="button" class="primary">Close</button></div>
+</div></dialog>
+
+<dialog id="progressCardDialog"><div class="editor v17f-progress-dialog">
+  <div class="editor-head"><div><span class="eyebrow">PLAYER PROGRESS</span><h2>Shareable progress tracker</h2><p class="panel-note">Client-safe PNG — no contact or payment details are included.</p></div><button type="button" class="close-btn" id="closeProgressCard">×</button></div>
+  <img id="progressCardPreview" class="v17f-progress-card-preview" alt="Generated Pickyla player progress tracker">
+  <div class="editor-actions"><button id="cancelProgressCard" type="button" class="soft-danger">Close</button><button id="downloadProgressCard" type="button" class="primary">Download PNG</button></div>
+</div></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="admin.js?v=17e"></script><script src="admin-v17f.js?v=17f"></script><script src="admin-v17g.js?v=17g"></script><script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{}));}</script></body></html>
