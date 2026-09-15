@@ -1,7 +1,7 @@
 window.COACH_APP_CONFIG = {
   templateVersion: "1.2.0",
   packageTier: "pro",
-  storagePrefix: "coach-booking-template",
+  storagePrefix: "coach-kyle-validation",
 
   brand: {
     name: "Your Coaching Brand",
@@ -64,9 +64,9 @@ window.COACH_APP_CONFIG = {
   },
 
   backend: {
-    demoMode: true,
-    supabaseUrl: "",
-    supabasePublishableKey: ""
+    demoMode: false,
+    supabaseUrl: "https://pnomsapqqkgcvkzknujc.supabase.co",
+    supabasePublishableKey: "sb_publishable_EokwTiLlK_qy2Upc_0j3hw_noRX84_q"
   },
 
   publicSiteUrl: "",
