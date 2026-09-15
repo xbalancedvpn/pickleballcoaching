@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Pickyla Pickleball Coaching",
-  "short_name": "Pickyla",
-  "description": "Pickleball coaching schedule, programs and booking in Santiago City, Isabela.",
+  "name": "Coach Booking System",
+  "short_name": "Coach Booking",
+  "description": "White-label pickleball coaching booking and management system.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -26,24 +26,12 @@
     {
       "name": "Book a Session",
       "short_name": "Book",
-      "url": "./#booking",
-      "icons": [
-        {
-          "src": "android-chrome-192x192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "url": "./#booking"
     },
     {
       "name": "Admin",
       "short_name": "Admin",
-      "url": "./admin.html",
-      "icons": [
-        {
-          "src": "android-chrome-192x192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "url": "./admin.html"
     }
   ]
 }
