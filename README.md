@@ -24,20 +24,20 @@ Admin: `https://pickyla-coaching.xbalanced.net/admin.html`
 - Group (4–8): ₱250 each/hour
 - Court fee is separate and is not counted as Pickyla coaching income.
 
-## Production files
-Public: `index.html`, `style.css`, `script.js`, `v17f.css`, `v17f.js`, `v17g.css`, `v17g.js`
+## Repository layout
+The root now contains mostly **live production files** only.
 
-Admin: `admin.html`, `admin.css`, `admin.js`, `admin-v17f.css`, `admin-v17f.js`, `admin-v17g.css`, `admin-v17g.js`
-
-PWA: `site.webmanifest`, `service-worker.js`, favicon/app-icon files
-
-Brand assets in use: `pickyla-emblem-final.png`, `pickyla-logo-final.png`, `pickyla-wordmark-final.png`, `kyla-coach.jpg`
+- Public runtime: `index.html`, `style.css`, `script.js`, `v17f.*`, `v17g.*`
+- Admin runtime: `admin.html`, `admin.css`, `admin.js`, `admin-v17f.*`, `admin-v17g.*`
+- PWA/runtime: `service-worker.js`, `site.webmanifest`, icons and current brand assets
+- Database history: `database/migrations/`
+- Database notes: `database/README.md`
 
 ## Backend
 Supabase project ref: `bnekbuwfloagqjzselxp`
 
-Historical SQL migration files are retained in the repository for recovery/reference. Production data should not be deleted during repository cleanup.
+Historical SQL files were moved out of the repository root into `database/migrations/`; they were **not deleted**.
 
-## Backup
-Before the repository cleanup, a backup branch was created:
-`archive/pre-cleanup-v17g-20260915`
+## Recovery branches
+- `archive/pre-cleanup-v17g-20260915`
+- `archive/pre-reorg-v17g-20260915`
