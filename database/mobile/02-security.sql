@@ -48,6 +48,10 @@ create policy "Public read published testimonials"
 on public.testimonials for select to anon
 using (is_published = true and review_status = 'approved');
 
+create policy "Public read schedule status"
+on public.schedule_slots for select to anon
+using (true);
+
 grant usage on schema public to anon, authenticated;
 
 grant select, insert, update, delete on public.clients to authenticated;
@@ -80,6 +84,7 @@ revoke all on public.inquiry_self_assessments from anon;
 grant select on public.coaching_programs to anon;
 grant select on public.coaching_program_sessions to anon;
 grant select on public.testimonials to anon;
+grant select (slot_date, start_hour, status) on public.schedule_slots to anon;
 
 create view public.public_schedule
 with (security_invoker = true)
