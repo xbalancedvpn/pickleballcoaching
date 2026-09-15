@@ -37,7 +37,7 @@
   async function openEdit(client){
     editClient=client;const p=clientParts(client);
     $m('v17gEditFirst').value=p.first_name||'';$m('v17gEditLast').value=p.last_name||'';$m('v17gEditContact').value=client.contact||'';$m('v17gEditNotes').value=client.notes||'';
-    $m('v17gEditHint').textContent=looksCombined(client.full_name)?'This looks like an old combined 2-person record. Use “Split Pair” instead if these are two different people.':'Saving also updates the linked primary booking display name and participant identity.';
+    $m('v17gEditHint').textContent=looksCombined(client.full_name)?'This looks like an old combined 2-person record. Use “Split Pair” from the client profile if these are two different people.':'Saving also updates the linked primary booking display name and participant identity.';
     editDialog.showModal();
   }
   async function bestPairSeed(client){
@@ -71,9 +71,35 @@
     splitDialog.close();toast('Legacy pair split into individual clients');await loadV17Clients();if(data?.primary_client_id&&typeof openV17Client==='function')await openV17Client(data.primary_client_id);
   };
 
+  // Client list stays intentionally simple: one Edit button only.
+  // Edit first opens the client profile, then opens the editor. Remove/Split live inside the profile.
   const oldRender=typeof renderV17Clients==='function'?renderV17Clients:null;
-  if(oldRender){renderV17Clients=function(){oldRender();const q=String($m('clientSearch')?.value||'').trim().toLowerCase();const rows=(typeof v17Clients!=='undefined'?v17Clients:[]).filter(c=>!q||String(c.full_name||'').toLowerCase().includes(q)||String(c.contact||'').toLowerCase().includes(q));[...document.querySelectorAll('#clientList .client-card')].forEach((card,i)=>{const client=rows[i],top=card.querySelector('.client-card-top');if(!client||!top)return;let actions=top.querySelector('.v17g-client-card-maint');if(!actions){actions=document.createElement('div');actions.className='v17g-client-card-maint';top.appendChild(actions);}if(!actions.querySelector('.v17g-client-edit')){const edit=document.createElement('button');edit.type='button';edit.className='v17g-client-edit';edit.textContent='Edit';edit.onclick=e=>{e.preventDefault();e.stopPropagation();openEdit(client);};actions.appendChild(edit);}if(looksCombined(client.full_name)&&!actions.querySelector('.v17g-client-split')){const split=document.createElement('button');split.type='button';split.className='v17g-client-split';split.textContent='Split Pair';split.onclick=e=>{e.preventDefault();e.stopPropagation();openSplit(client);};actions.appendChild(split);}});};if($m('clientSearch'))$m('clientSearch').oninput=renderV17Clients;setTimeout(()=>{if(typeof v17Clients!=='undefined'&&v17Clients.length)renderV17Clients();},700);}
+  if(oldRender){
+    renderV17Clients=function(){
+      oldRender();
+      const q=String($m('clientSearch')?.value||'').trim().toLowerCase();
+      const rows=(typeof v17Clients!=='undefined'?v17Clients:[]).filter(c=>!q||String(c.full_name||'').toLowerCase().includes(q)||String(c.contact||'').toLowerCase().includes(q));
+      [...document.querySelectorAll('#clientList .client-card')].forEach((card,i)=>{
+        const client=rows[i],top=card.querySelector('.client-card-top');if(!client||!top)return;
+        top.querySelectorAll('.v17g-client-remove,.v17g-client-card-maint,.v17g-client-edit-fallback').forEach(el=>el.remove());
+        const action=[...top.querySelectorAll('button')][0];if(!action)return;
+        action.textContent='Edit';action.classList.add('v17g-client-edit','v17g-client-list-edit');
+        action.onclick=async e=>{e.preventDefault();e.stopPropagation();if(typeof openV17Client==='function')await openV17Client(client.id);const current=(typeof v17SelectedClient!=='undefined'&&v17SelectedClient?.id===client.id)?v17SelectedClient:client;openEdit(current);};
+      });
+    };
+    if($m('clientSearch'))$m('clientSearch').oninput=renderV17Clients;
+    setTimeout(()=>{if(typeof v17Clients!=='undefined')renderV17Clients();},300);
+  }
 
   const oldOpen=typeof openV17Client==='function'?openV17Client:null;
-  if(oldOpen){openV17Client=async function(id){await oldOpen(id);const client=typeof v17SelectedClient!=='undefined'?v17SelectedClient:null,actions=$m('clientDetailSection')?.querySelector('.client-detail-actions');if(!client||!actions)return;let edit=$m('v17gEditClientBtn');if(!edit){edit=document.createElement('button');edit.id='v17gEditClientBtn';edit.type='button';edit.className='v17g-client-edit-detail';edit.textContent='Edit Client';actions.prepend(edit);}edit.onclick=()=>openEdit(client);let split=$m('v17gSplitClientBtn');if(looksCombined(client.full_name)){if(!split){split=document.createElement('button');split.id='v17gSplitClientBtn';split.type='button';split.className='v17g-client-split-detail';split.textContent='Split Pair';actions.insertBefore(split,actions.querySelector('.v17g-client-remove-detail')||null);}split.classList.remove('hidden');split.onclick=()=>openSplit(client);}else if(split)split.classList.add('hidden');};}
+  if(oldOpen){
+    openV17Client=async function(id){
+      await oldOpen(id);
+      const client=typeof v17SelectedClient!=='undefined'?v17SelectedClient:null,actions=$m('clientDetailSection')?.querySelector('.client-detail-actions');if(!client||!actions)return;
+      let edit=$m('v17gEditClientBtn');if(!edit){edit=document.createElement('button');edit.id='v17gEditClientBtn';edit.type='button';edit.className='v17g-client-edit-detail';edit.textContent='Edit Client';actions.prepend(edit);}edit.onclick=()=>openEdit(client);
+      let split=$m('v17gSplitClientBtn');if(looksCombined(client.full_name)){if(!split){split=document.createElement('button');split.id='v17gSplitClientBtn';split.type='button';split.className='v17g-client-split-detail';split.textContent='Split Pair';actions.insertBefore(split,actions.querySelector('.v17g-client-remove-detail')||null);}split.classList.remove('hidden');split.onclick=()=>openSplit(client);}else if(split)split.classList.add('hidden');
+    };
+  }
+
+  window.pickylaClientMaintenanceReady=true;
 })();
