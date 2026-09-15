@@ -1,0 +1,20 @@
+/* Pickyla v17-F public overlay: focused menu views + self-assessment */
+body.v17f-focused main > section{display:none!important}
+body.v17f-focused main > section.v17f-active-section{display:block!important;animation:v17fFade .22s ease}
+@keyframes v17fFade{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:none}}
+.main-nav a.v17f-active{color:#111;background:#f5c400;border-radius:999px;padding:.45rem .75rem}
+.v17f-view-note{display:none}
+body.v17f-focused .v17f-active-section{min-height:calc(100vh - 90px)}
+
+.v17f-self-assessment{margin-top:18px;border:1px solid rgba(17,17,17,.12);border-radius:18px;background:#fff;padding:0;overflow:hidden}
+.v17f-self-assessment summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;font-weight:700;background:#fff9df}
+.v17f-self-assessment summary::-webkit-details-marker{display:none}
+.v17f-self-assessment summary span{display:flex;flex-direction:column;gap:2px}
+.v17f-self-assessment summary em{font-style:normal;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:#111;color:#f5c400;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.v17f-self-assessment>p{margin:0;padding:16px 18px 8px;color:#666;font-size:.92rem}
+.v17f-self-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px 18px 4px}
+.v17f-self-grid label,.v17f-self-note{display:flex;flex-direction:column;gap:6px;font-size:.82rem;font-weight:700;color:#333}
+.v17f-self-grid select,.v17f-self-note textarea{width:100%;border:1px solid #ddd7bb;border-radius:12px;background:#fff;padding:12px;font:inherit;color:#111}
+.v17f-self-note{padding:10px 18px 18px}
+.v17f-self-note span{font-weight:500;color:#777}
+@media(max-width:720px){.v17f-self-grid{grid-template-columns:1fr}.main-nav a.v17f-active{padding:.55rem .7rem}}

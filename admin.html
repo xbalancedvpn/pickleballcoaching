@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111"><title>Pickyla Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet"><link rel="stylesheet" href="admin.css?v=17e">
+  <link rel="stylesheet" href="admin-v17f.css?v=17f">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -8,7 +9,7 @@
 </head><body>
 <div id="toast" class="toast"></div>
 <section id="loginView" class="auth-page"><div class="auth-card"><div class="admin-brand"><img class="brand-logo auth-logo" src="pickyla-wordmark-final.png" alt="Pickyla"></div><span class="eyebrow">COACH ADMIN</span><h1>Manage coaching in seconds.</h1><p>Sign in with your Supabase admin account.</p><form id="loginForm"><label>Email<input id="email" type="email" required></label><label>Password<input id="password" type="password" required></label><button class="primary" type="submit">Sign In</button></form><small id="loginError"></small><a class="auth-public-link" href="index.html">← Back to Public Site</a></div></section>
-<section id="adminView" class="hidden"><header class="admin-topbar"><div class="admin-brand brand-stack"><img class="brand-logo admin-logo" src="pickyla-emblem-final.png" alt="Pickyla emblem"><small>Coach Admin</small></div><div class="admin-top-actions"><a class="top-public-link" href="index.html" title="Open public site">↗ <span>Public Site</span></a><button id="adminMenuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="adminMenuDrawer">☰ <span>Menu</span></button><button id="logoutBtn" class="text-btn">Sign out</button></div></header>
+<section id="adminView" class="hidden"><header class="admin-topbar"><div class="admin-brand brand-stack"><img class="brand-logo admin-logo" src="pickyla-emblem-final.png" alt="Pickyla emblem"><small>Coach Admin</small></div><div class="admin-top-actions"><a class="top-public-link" href="index.html" title="Open public site">↗ <span>Public Site</span></a><button id="adminNotificationBtn" class="v17f-notification-btn" type="button" title="Pending admin actions" aria-label="Open pending admin actions">🔔 <span id="adminNotificationCount">0</span></button><button id="adminMenuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="adminMenuDrawer">☰ <span>Menu</span></button><button id="logoutBtn" class="text-btn">Sign out</button></div></header>
 <div id="adminMenuBackdrop" class="admin-menu-backdrop hidden"></div>
 <aside id="adminMenuDrawer" class="admin-menu-drawer" aria-hidden="true"><div class="admin-menu-head"><div><span class="eyebrow">QUICK NAVIGATION</span><h2>Admin Menu</h2></div><button id="adminMenuClose" type="button" aria-label="Close menu">×</button></div><nav class="admin-menu-links"><a href="#adminDashboardTop">Dashboard</a><a href="#todayCommandSection">Today</a><a href="#paymentDashboardSection">Payments</a><a href="#adminReportsSection">Reports</a><a href="#weeklyShareSection">Weekly Schedule</a><a href="#shareToolsSection">Marketing & Testimonials</a><a href="#clientHubSection">Client Profiles</a><a href="#programHubSection">Programs</a><a href="#bookingToolsSection">Booking Tools</a><a href="#inquirySection">Inquiries</a><a href="#calendarSection">Calendar</a><a href="#daySection">Day View</a></nav><a class="admin-menu-public" href="index.html">Open Public Site ↗</a></aside><main class="admin-wrap">
 <section class="welcome" id="adminDashboardTop"><span class="eyebrow">DASHBOARD</span><h1>Coach operations, clients & progress</h1><p>Run today’s sessions, track clients and programs, monitor progress, manage collections, and keep the schedule moving.</p></section>
@@ -90,11 +91,15 @@
 </section>
 
 <section id="clientDetailSection" class="client-detail panel hidden">
-  <div class="panel-head"><div><span class="eyebrow">CLIENT PROFILE</span><h2 id="clientDetailName">Client</h2><p id="clientDetailMeta" class="panel-note"></p></div><div class="client-detail-actions"><button id="addAssessmentBtn" class="secondary" type="button">+ Progress Assessment</button><button id="enrollProgramBtn" class="primary" type="button">Enroll in Program</button></div></div>
+  <div class="panel-head"><div><span class="eyebrow">CLIENT PROFILE</span><h2 id="clientDetailName">Client</h2><p id="clientDetailMeta" class="panel-note"></p></div><div class="client-detail-actions"><button id="generateProgressCardBtn" class="secondary" type="button">Progress Card</button><button id="addAssessmentBtn" class="secondary" type="button">+ Progress Assessment</button><button id="enrollProgramBtn" class="primary" type="button">Enroll in Program</button></div></div>
   <div id="clientDetailStats" class="client-detail-stats"></div>
   <div class="client-detail-grid">
     <div><div class="subhead"><div><span class="eyebrow">SESSION HISTORY</span><h3>Bookings & outcomes</h3></div></div><div id="clientSessionHistory" class="client-session-history"></div></div>
     <div><div class="subhead"><div><span class="eyebrow">PROGRAMS</span><h3>Enrollment progress</h3></div></div><div id="clientProgramHistory" class="client-program-history"></div><div class="subhead"><div><span class="eyebrow">PLAYER PROGRESS</span><h3>Latest assessment</h3></div></div><div id="clientProgressSummary" class="client-progress-summary"></div></div>
+  </div>
+  <div class="v17f-client-extra-grid">
+    <section class="v17f-client-extra"><div class="subhead"><div><span class="eyebrow">PROGRAM JOURNEY</span><h3>Session goals & status</h3></div></div><div id="v17fProgramJourney" class="v17f-program-journey"><div class="empty">Open a client profile to view the program journey.</div></div></section>
+    <section class="v17f-client-extra"><div class="subhead"><div><span class="eyebrow">PROGRESS TIMELINE</span><h3>Assessment history</h3></div></div><div id="v17fProgressHistory" class="v17f-progress-history"><div class="empty">Open a client profile to view assessment history.</div></div></section>
   </div>
 </section>
 
@@ -183,4 +188,17 @@
   <div class="editor-actions"><button type="button" class="soft-danger" id="cancelConfirmationCard">Close</button><button type="button" class="primary" id="downloadConfirmationCard">Download PNG</button></div>
 </div></dialog>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="admin.js?v=17e"></script><script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{}));}</script></body></html>
+<dialog id="adminReminderDialog" class="v17f-reminder-dialog"><div class="editor v17f-reminder-card">
+  <div class="editor-head"><div><span class="eyebrow">ADMIN REMINDER</span><h2>Things that need attention</h2><p class="panel-note">Pending requests, approvals, session closing, and collections in one place.</p></div><button type="button" class="close-btn" id="closeAdminReminder">×</button></div>
+  <div id="adminReminderSummary" class="v17f-reminder-summary"><div class="empty">Checking pending actions…</div></div>
+  <label class="v17f-reminder-pref"><input id="adminReminderEveryVisit" type="checkbox" checked> Show this reminder automatically every time I visit Admin when there are pending actions.</label>
+  <div class="editor-actions"><button id="refreshAdminReminder" type="button" class="secondary">Refresh</button><button id="dismissAdminReminder" type="button" class="primary">Close</button></div>
+</div></dialog>
+
+<dialog id="progressCardDialog"><div class="editor v17f-progress-dialog">
+  <div class="editor-head"><div><span class="eyebrow">PLAYER PROGRESS</span><h2>Shareable progress tracker</h2><p class="panel-note">Client-safe PNG — no contact or payment details are included.</p></div><button type="button" class="close-btn" id="closeProgressCard">×</button></div>
+  <img id="progressCardPreview" class="v17f-progress-card-preview" alt="Generated Pickyla player progress tracker">
+  <div class="editor-actions"><button id="cancelProgressCard" type="button" class="soft-danger">Close</button><button id="downloadProgressCard" type="button" class="primary">Download PNG</button></div>
+</div></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="admin.js?v=17e"></script><script src="admin-v17f.js?v=17f"></script><script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(()=>{}));}</script></body></html>

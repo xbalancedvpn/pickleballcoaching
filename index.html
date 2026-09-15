@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Sacramento&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=17e">
+  <link rel="stylesheet" href="v17f.css?v=17f">
 
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -22,7 +23,7 @@
     <img class="brand-logo" src="pickyla-emblem-final.png" alt="Pickyla emblem">
   </a>
   <nav id="mainNav" class="main-nav">
-    <a href="#home">Home</a><a href="#about">Coach</a><a href="#programs">Programs</a><a href="#rates">Rates</a><button id="weekPreviewNav" class="nav-week-link" type="button">Week Preview</button><a href="#booking">Schedule</a><a href="#contact">Contact</a>
+    <a href="#home" data-public-tab="home">Home</a><a href="#about" data-public-tab="about">Coach</a><a href="#improve" data-public-tab="improve">Find My Coaching</a><a href="#programs" data-public-tab="programs">Programs</a><a href="#rates" data-public-tab="rates">Rates</a><a href="#testimonialsSection" data-public-tab="testimonialsSection">Testimonials</a><button id="weekPreviewNav" class="nav-week-link" type="button">Week Preview</button><a href="#booking" data-public-tab="booking">Schedule</a><a href="#contact" data-public-tab="contact">Contact</a>
   </nav>
   <div class="nav-actions">
     <button id="weekPreviewBtn" class="week-top-btn" type="button" aria-label="Preview this week's schedule" title="Preview this week's schedule">▦ <span>Week</span></button>
@@ -125,6 +126,23 @@
           <button id="forgetRememberedDetails" type="button" class="forget-details hidden">Forget saved details</button>
         </div>
         <p class="remember-note">Saved details stay only in this browser/device. Recent player suggestions are also stored only on this device.</p>
+        <details id="v17fSelfAssessment" class="v17f-self-assessment">
+          <summary><span><strong>First time with Pickyla?</strong> Add Player 1 initial self-assessment</span><em>Optional</em></summary>
+          <p>Rate how you currently feel about your game. This becomes a starting baseline for your progress tracker after Kyla confirms your booking. It does not affect booking approval.</p>
+          <div id="v17fSelfAssessmentGrid" class="v17f-self-grid">
+            <label>Serve<select data-self-score="serve"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Return<select data-self-score="return_score"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Forehand<select data-self-score="forehand"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Backhand<select data-self-score="backhand"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Dinking<select data-self-score="dinking"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Footwork<select data-self-score="footwork"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Positioning<select data-self-score="positioning"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Consistency<select data-self-score="consistency"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Strategy<select data-self-score="strategy"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+            <label>Confidence<select data-self-score="confidence"><option value="">Not rated</option><option value="1">1 — Needs Foundation</option><option value="2">2 — Developing</option><option value="3">3 — Functional</option><option value="4">4 — Consistent</option><option value="5">5 — Strong</option></select></label>
+          </div>
+          <label class="v17f-self-note">Anything Kyla should know? <span>Optional</span><textarea id="v17fSelfAssessmentNote" rows="3" maxlength="500" placeholder="Example: I am comfortable serving but still nervous at the kitchen."></textarea></label>
+        </details>
       </div>
 
       <div class="summary"><div><span>BOOKING REQUEST</span><strong id="summaryText">Select a date, time range, coaching type, and complete all player names.</strong></div></div>
@@ -166,4 +184,5 @@
 <div id="copyToast" class="copy-toast">Booking details copied!</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js?v=17e"></script>
+<script src="v17f.js?v=17f"></script>
 </body></html>
