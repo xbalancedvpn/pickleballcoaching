@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" role="img" aria-labelledby="title desc">
+  <title id="title">Coaching Brand Placeholder</title>
+  <desc id="desc">Neutral logo placeholder for the master coaching booking template.</desc>
+  <rect width="600" height="180" rx="28" fill="#111111"/>
+  <circle cx="90" cy="90" r="54" fill="#f6d21f"/>
+  <path d="M58 90h64M90 58v64" stroke="#111111" stroke-width="18" stroke-linecap="round"/>
+  <text x="172" y="86" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" fill="#ffffff">YOUR BRAND</text>
+  <text x="172" y="126" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#d6d6d6">Pickleball Coaching</text>
+</svg>
