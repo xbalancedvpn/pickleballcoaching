@@ -1,4 +1,4 @@
-const CACHE_NAME="pickyla-v17g-static-v1";
+const CACHE_NAME="pickyla-v17g-clientcleanup-v1";
 const STATIC_ASSETS=["./","./index.html","./admin.html","./style.css?v=17e","./script.js?v=17e","./admin.css?v=17e","./admin.js?v=17e","./v17f.css?v=17f","./v17f.js?v=17f","./admin-v17f.css?v=17f","./admin-v17f.js?v=17f","./v17g.css?v=17g","./v17g.js?v=17g","./admin-v17g.css?v=17g","./admin-v17g.js?v=17g","./site.webmanifest","./pickyla-emblem-final.png","./pickyla-logo-final.png","./pickyla-wordmark-final.png","./kyla-coach.jpg","./android-chrome-192x192.png","./android-chrome-512x512.png","./apple-touch-icon.png","./favicon-32x32.png","./favicon-16x16.png"];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(STATIC_ASSETS)).catch(()=>{}));self.skipWaiting();});
 self.addEventListener("activate",event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)))));self.clients.claim();});
