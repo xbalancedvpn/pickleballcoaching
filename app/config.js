@@ -1,5 +1,5 @@
 window.COACH_APP_CONFIG = {
-  templateVersion: "1.1.0",
+  templateVersion: "1.2.0",
   packageTier: "pro",
   storagePrefix: "coach-booking-template",
 
