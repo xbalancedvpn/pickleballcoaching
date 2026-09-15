@@ -1,55 +1,43 @@
-# Pickyla Coaching v8
+# Pickyla Pickleball Coaching
 
-## New in v8
-- Mobile/desktop navigation menu on the client page.
-- Random mixed pickleball sayings on load and every 15 seconds.
-- Client name/contact included in the generated booking request.
-- Exact group size selector for 3–5 player requests.
-- Admin Smart Paste: paste the client-generated script, auto-fill the booking form, and check overlaps.
-- Final booking confirmation dialog before saving.
-- Pending Inquiry tracker with New / Waiting / Tentative / Confirmed / Cancelled statuses.
-- Daily/weekly/monthly/all-time summary plus charts.
-- Month calendar + day view retained.
-- Pickyla green/cream UI restored. Black/yellow is limited to the temporary logo mark direction only.
+Current stable release: **v17-G**
 
-## SQL
-Run `supabase-v8-migration.sql` ONCE before using Pending Inquiries. The existing booking system still uses the v4 tables you already created.
+Live site: `https://pickyla-coaching.xbalanced.net`
+Admin: `https://pickyla-coaching.xbalanced.net/admin.html`
 
-## Logo
-The website currently uses a lightweight Signature + Monogram placeholder. Separate premium logo concepts are generated for selection; after choosing one, replace the placeholder with the final logo asset.
+## Current features
+- Public coaching profile, rates, programs, testimonials, live availability and weekly schedule preview
+- Booking requests for 1–8 players with structured participant names
+- Browser-side remembered client details and repeat-player suggestions
+- Admin inquiries, bookings, session status, collections and reports
+- Client profiles and coaching history
+- Fixed-price coaching programs with per-session goals
+- Player progress assessments and downloadable progress cards
+- Public testimonial submission with admin review before publishing
+- Weekly schedule PNG generator, booking confirmation cards and QR tools
+- PWA / installable mobile experience
+- Admin reminders, quick navigation, mobile dock and Today workflow
 
+## Current coaching rates
+- 1-on-1: ₱400/hour
+- Partners (2–3): ₱300 each/hour
+- Group (4–8): ₱250 each/hour
+- Court fee is separate and is not counted as Pickyla coaching income.
 
-## V9 final polish
-- Added integrated Pickyla premium logo system (light + dark SVG variants + icon).
-- Public page header, hero, and footer now use the approved Pickyla branding.
-- Admin login and topbar updated to use the same logo set.
-- Existing v8 features remain: menu, rotating sayings, calendar scheduling, copy/open Facebook flow, inquiry parser, reports, and booking group actions.
+## Production files
+Public: `index.html`, `style.css`, `script.js`, `v17f.css`, `v17f.js`, `v17g.css`, `v17g.js`
 
+Admin: `admin.html`, `admin.css`, `admin.js`, `admin-v17f.css`, `admin-v17f.js`, `admin-v17g.css`, `admin-v17g.js`
 
-## V10 logo + palette adjustment
-- Reworked logo icon so it no longer reads like a letter D.
-- Wordmark now reads as one word: PICKYLA (PIC dark/white depending on background, KYLA yellow).
-- Refreshed site accents from green to premium yellow + black.
-- No new database changes required; same Supabase setup as v8/v9.
+PWA: `site.webmanifest`, `service-worker.js`, favicon/app-icon files
 
+Brand assets in use: `pickyla-emblem-final.png`, `pickyla-logo-final.png`, `pickyla-wordmark-final.png`, `kyla-coach.jpg`
 
-## v12 final logo correction
-- Uses the user's uploaded `9132.png` artwork as the exact source.
-- No AI redraw or vector reinterpretation is used in the website logo.
-- `pickyla-logo-final.png` is a crop of the approved full logo.
-- `pickyla-wordmark-final.png` is a crop of the same approved artwork for compact header/admin use.
-- Final theme is black / yellow / white.
-- No new Supabase migration is required.
+## Backend
+Supabase project ref: `bnekbuwfloagqjzselxp`
 
+Historical SQL migration files are retained in the repository for recovery/reference. Production data should not be deleted during repository cleanup.
 
-## v13 approved logo integration
-- Uses the approved separated emblem and PICKYLA wordmark shown in the latest logo reference.
-- Includes three logo assets: full logo, emblem-only, and wordmark-only.
-- No Supabase/database changes required.
-
-
-## v14 favicon update
-- Added favicon assets based on the Pickyla emblem.
-- Added favicon links to `index.html` and `admin.html`.
-- Added `site.webmanifest`, `favicon.ico`, PNG favicon files, and Apple touch icon.
-- No Supabase changes required.
+## Backup
+Before the repository cleanup, a backup branch was created:
+`archive/pre-cleanup-v17g-20260915`
