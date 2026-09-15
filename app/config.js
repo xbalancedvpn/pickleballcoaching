@@ -1,5 +1,5 @@
 window.COACH_APP_CONFIG = {
-  templateVersion: "1.0.0",
+  templateVersion: "1.1.0",
   packageTier: "pro",
   storagePrefix: "coach-booking-template",
 
@@ -45,7 +45,8 @@ window.COACH_APP_CONFIG = {
   courtFee: {
     included: false,
     note: "Court fee is not included in the coaching rate.",
-    detail: "Court fee depends on the selected venue and schedule and is confirmed separately."
+    detail: "Court fee depends on the selected venue and schedule and is confirmed separately.",
+    bookingMessage: "Not included; final court fee is confirmed separately based on venue and schedule."
   },
 
   contact: {
