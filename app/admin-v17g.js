@@ -53,6 +53,61 @@
   function classifyToday(el){const t=el.textContent.toLowerCase();return{action:t.includes('needs closing')||t.includes('balance ₱')||t.includes('balance p'),upcoming:t.includes('scheduled')&&!t.includes('needs closing'),completed:t.includes('completed'),outstanding:(t.includes('balance ₱')||t.includes('balance p'))&&!t.includes('balance ₱0')&&!t.includes('balance p0')};}
   function applyTodayFilter(){if(!todayList)return;const items=[...todayList.querySelectorAll('.today-session-item')];let shown=0;items.forEach(el=>{const c=classifyToday(el),ok=todayFilter==='all'||Boolean(c[todayFilter]);el.classList.toggle('v17g-filtered',!ok);if(ok)shown++;});const label=$g('v17gTodayCount');if(label)label.textContent=`${shown} shown`;}
 
+  // Client cleanup: permanently delete empty profiles, archive profiles that already have history.
+  async function clientUsage(clientId){
+    const results=await Promise.all([
+      db.from('booking_participants').select('booking_id',{count:'exact',head:true}).eq('client_id',clientId),
+      db.from('bookings').select('id',{count:'exact',head:true}).eq('client_id',clientId),
+      db.from('client_programs').select('id',{count:'exact',head:true}).eq('client_id',clientId),
+      db.from('progress_assessments').select('id',{count:'exact',head:true}).eq('client_id',clientId)
+    ]);
+    const failed=results.find(r=>r.error);if(failed)throw failed.error;
+    return{participantLinks:Number(results[0].count||0),primaryBookings:Number(results[1].count||0),programs:Number(results[2].count||0),assessments:Number(results[3].count||0)};
+  }
+  function closeClientProfile(){
+    $g('clientDetailSection')?.classList.add('hidden');
+    try{v17SelectedClient=null;}catch(_e){}
+  }
+  async function removeClientProfile(client){
+    if(!client?.id)return;
+    let usage;try{usage=await clientUsage(client.id);}catch(e){return alert(`Could not check client history.\n\n${e.message||e}`);}
+    const hasHistory=Object.values(usage).some(Number);
+    if(hasHistory){
+      const detail=[usage.primaryBookings?`${usage.primaryBookings} primary booking${usage.primaryBookings===1?'':'s'}`:'',usage.participantLinks?`${usage.participantLinks} booking participant link${usage.participantLinks===1?'':'s'}`:'',usage.programs?`${usage.programs} program enrollment${usage.programs===1?'':'s'}`:'',usage.assessments?`${usage.assessments} assessment${usage.assessments===1?'':'s'}`:''].filter(Boolean).join(', ');
+      const ok=confirm(`${client.full_name} already has linked coaching history (${detail}).\n\nTo protect bookings, payments, programs and progress records, Pickyla will ARCHIVE this client instead of permanently deleting the profile. The client will disappear from the active client list.\n\nArchive this client?`);
+      if(!ok)return;
+      const {error}=await db.from('clients').update({is_active:false}).eq('id',client.id);if(error)return alert(error.message);
+      closeClientProfile();toast('Client archived');await loadV17Clients();return;
+    }
+    const ok=confirm(`Permanently delete ${client.full_name}?\n\nNo linked bookings, programs or progress records were found. This action cannot be undone.`);if(!ok)return;
+    const typed=prompt(`Type DELETE to permanently remove ${client.full_name}.`);if(typed!=='DELETE')return;
+    const {error}=await db.from('clients').delete().eq('id',client.id);if(error)return alert(error.message);
+    closeClientProfile();toast('Client permanently deleted');await loadV17Clients();
+  }
+  const oldRenderClients=(typeof renderV17Clients==='function')?renderV17Clients:null;
+  if(oldRenderClients){
+    renderV17Clients=function(){
+      oldRenderClients();
+      const q=String($g('clientSearch')?.value||'').trim().toLowerCase();
+      const rows=(typeof v17Clients!=='undefined'?v17Clients:[]).filter(c=>!q||String(c.full_name||'').toLowerCase().includes(q)||String(c.contact||'').toLowerCase().includes(q));
+      [...document.querySelectorAll('#clientList .client-card')].forEach((card,i)=>{
+        const client=rows[i],top=card.querySelector('.client-card-top');if(!client||!top||top.querySelector('.v17g-client-remove'))return;
+        const remove=document.createElement('button');remove.type='button';remove.className='v17g-client-remove';remove.textContent='Remove';remove.onclick=e=>{e.preventDefault();e.stopPropagation();removeClientProfile(client);};top.appendChild(remove);
+      });
+    };
+    if($g('clientSearch'))$g('clientSearch').oninput=renderV17Clients;
+    setTimeout(()=>{if(typeof v17Clients!=='undefined'&&v17Clients.length)renderV17Clients();},500);
+  }
+  const oldOpenClient=(typeof openV17Client==='function')?openV17Client:null;
+  if(oldOpenClient){
+    openV17Client=async function(id){
+      await oldOpenClient(id);
+      const actions=$g('clientDetailSection')?.querySelector('.client-detail-actions');if(!actions)return;
+      let remove=$g('v17gRemoveClientBtn');if(!remove){remove=document.createElement('button');remove.id='v17gRemoveClientBtn';remove.type='button';remove.className='v17g-client-remove-detail';remove.textContent='Remove Client';actions.appendChild(remove);}
+      remove.onclick=()=>{if(typeof v17SelectedClient!=='undefined'&&v17SelectedClient)removeClientProfile(v17SelectedClient);};
+    };
+  }
+
   // Mobile dock for daily admin use.
   const dock=document.createElement('nav');dock.className='v17g-mobile-dock';dock.setAttribute('aria-label','Admin quick actions');dock.innerHTML=`
     <button type="button" data-jump="todayCommandSection"><b>◷</b>Today</button>
